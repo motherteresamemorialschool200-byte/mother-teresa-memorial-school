@@ -2,9 +2,19 @@ import { client } from '@/sanity/lib/client';
 import Link from 'next/link';
 
 
+async function getCachedDisclosureData() {
+  'use cache';
+
+  const [schoolInfo, disclosures] = await Promise.all([
+    client.fetch(`*[_type == "schoolInfo"][0]`),
+    client.fetch(`*[_type == "mandatoryDisclosure"]`),
+  ]);
+
+  return { schoolInfo, disclosures };
+}
+
 export default async function MandatoryDisclosure() {
-  const schoolInfo = await client.fetch(`*[_type == "schoolInfo"][0]`);
-  const disclosures = await client.fetch(`*[_type == "mandatoryDisclosure"]`);
+  const { schoolInfo, disclosures } = await getCachedDisclosureData();
 
   return (
     <div className="min-h-screen bg-[#F8F7F2] text-[#0F1E36] font-sans pb-20">
