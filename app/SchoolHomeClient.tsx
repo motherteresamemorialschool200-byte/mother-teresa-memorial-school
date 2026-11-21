@@ -931,22 +931,38 @@ export default function SchoolHomeClient({
       </section>
 
       {/* FOOTER */}
-      <footer className={`px-5 py-20 text-center ${isDarkMode ? "bg-black" : "bg-[#091426]"} text-white relative overflow-hidden`}>
-        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#C59B27] to-transparent" />
-        <div className="max-w-4xl mx-auto flex flex-col items-center relative z-10">
-          <h2 className="text-3xl font-black tracking-widest text-[#C59B27]">MOTHER TERESA MEMORIAL SCHOOL</h2>
-          <p className="text-sm font-bold text-gray-400 mt-4 tracking-widest">UDISE Code: {schoolInfo?.udiseCode || "20090212202"}</p>
-          
-          <div className="flex flex-wrap justify-center gap-10 mt-10 mb-10 text-sm font-bold">
-            <Link href="/privacy" className="hover:text-[#C59B27] transition">Privacy Policy</Link>
-            <Link href="/terms" className="hover:text-[#C59B27] transition">Terms & Conditions</Link>
-            <Link href="/mandatory-disclosure" className="hover:text-[#C59B27] transition">Mandatory Disclosure</Link>
-          </div>
+      <footer className={`px-4 py-12 sm:py-14 text-center ${isDarkMode ? "bg-black" : "bg-[#091426]"} text-white relative overflow-hidden`}>
+  <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#C59B27] to-transparent" />
 
-          <p className="text-xs font-medium text-gray-500 mt-2">© 2026 Mother Teresa Memorial School. All rights reserved.</p>
+  <div className="max-w-5xl mx-auto flex flex-col items-center relative z-10">
+    <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold tracking-[0.12em] leading-snug text-[#C59B27]">
+      MOTHER TERESA
+      <span className="block mt-1">MEMORIAL SCHOOL</span>
+    </h2>
 
-        </div>
-      </footer>
+    <p className="text-sm font-semibold text-gray-400 mt-4 tracking-wider">
+      UDISE Code: {schoolInfo?.udiseCode || "20090212202"}
+    </p>
+
+    <div className="flex flex-wrap justify-center items-center gap-x-6 gap-y-4 mt-8 text-sm font-semibold">
+      <Link href="/privacy" className="text-gray-300 hover:text-[#C59B27] transition-colors">
+        Privacy Policy
+      </Link>
+      <Link href="/terms" className="text-gray-300 hover:text-[#C59B27] transition-colors">
+        Terms & Conditions
+      </Link>
+      <Link href="/mandatory-disclosure" className="text-gray-300 hover:text-[#C59B27] transition-colors">
+        Mandatory Disclosure
+      </Link>
+    </div>
+
+    <div className="w-full max-w-3xl mt-8 pt-5 border-t border-white/10">
+      <p className="text-xs sm:text-sm font-medium text-gray-400 leading-relaxed">
+        © 2026 Mother Teresa Memorial School. All rights reserved.
+      </p>
+    </div>
+  </div>
+</footer>
 
       {/* POPUP MODALS */}
       
