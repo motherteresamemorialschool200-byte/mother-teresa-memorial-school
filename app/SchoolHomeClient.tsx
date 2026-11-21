@@ -101,9 +101,9 @@ const academicsData = [
   { id: "middle", title: "Classes 6 to 8", desc: "Preparing for higher education with a structured CBSE curriculum and labs.", color: "from-emerald-500 to-teal-400", icon: "🎓" },
 ];
 
-export default function SchoolHomeClient({
-  schoolInfo, notices, gallery, admissions, events, faculty, achievements, calendar, faqs
-}: {
+export default function SchoolHomeClient({ 
+  schoolInfo, notices, gallery, admissions, events, faculty, achievements, calendar, faqs 
+}: { 
   schoolInfo: SchoolInfo | null; notices: Notice[]; gallery: GalleryItem[]; admissions: Admission[];
   events: Event[]; faculty: Faculty[]; achievements: Achievement[]; calendar: CalendarItem[]; faqs: FAQ[];
 }) {
@@ -112,7 +112,7 @@ export default function SchoolHomeClient({
   const [showCookies, setShowCookies] = useState(true);
   const [showTopBtn, setShowTopBtn] = useState(false);
   const [showSecretaryModal, setShowSecretaryModal] = useState(false);
-
+  
   // Modals
   const [selectedNotice, setSelectedNotice] = useState<Notice | null>(null);
   const [selectedGalleryImg, setSelectedGalleryImg] = useState<GalleryItem | null>(null);
@@ -225,7 +225,7 @@ export default function SchoolHomeClient({
 
   return (
     <main className={`relative min-h-screen font-sans overflow-hidden transition-colors duration-300 ${isDarkMode ? "dark bg-[#0B1221] text-gray-200" : "bg-[#FDFDFD] text-[#0F1E36]"}`}>
-
+      
       <style dangerouslySetInnerHTML={{__html: `
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
         .animate-float { animation: float 4s ease-in-out infinite; }
@@ -237,7 +237,7 @@ export default function SchoolHomeClient({
         .hover-lift:hover { transform: translateY(-10px) scale(1.02); box-shadow: 0 40px 70px -20px rgba(15, 30, 54, 0.2); }
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .bg-pattern { background-image: radial-gradient(#C59B27 1px, transparent 1px); background-size: 24px 24px; opacity: 0.08; }
-
+        
         /* TWINKLING STARS */
         @keyframes twinkle {
           0%, 100% { opacity: 0.2; transform: scale(0.8); }
@@ -292,7 +292,7 @@ export default function SchoolHomeClient({
       <section id="home" className="relative overflow-hidden px-5 py-32 text-center text-white sm:py-40 bg-[#0F1E36]">
         <div className="absolute inset-0 bg-pattern" />
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#0F1E36]/95" />
-
+        
         {/* TWINKLING STARS */}
         <div className="star" style={{ top: '15%', left: '10%', width: '4px', height: '4px', animationDelay: '0s' }}></div>
         <div className="star" style={{ top: '30%', left: '20%', width: '6px', height: '6px', animationDelay: '1s' }}></div>
@@ -327,25 +327,25 @@ export default function SchoolHomeClient({
       <section className={`relative z-20 pt-16 pb-8 px-5 ${isDarkMode ? "bg-[#0B1221]" : "bg-[#F8F7F2]"}`}>
         <div className="mx-auto max-w-5xl">
           <div className={`grid grid-cols-2 md:grid-cols-4 rounded-3xl overflow-hidden shadow-[0_20px_40px_-15px_rgba(15,30,54,0.15)] border ${isDarkMode ? "bg-[#1E293B] border-gray-700" : "bg-white border-gray-100"}`}>
-
+            
             {/* Top Left */}
             <div className={`flex flex-col items-center justify-center py-8 px-4 text-center border-b md:border-b-0 md:border-r border-gray-100 dark:border-gray-700 ${isDarkMode ? "hover:bg-gray-800/50" : "hover:bg-gray-50"} transition-colors`}>
               <p className="text-4xl sm:text-5xl font-black text-[#C59B27] tracking-tight">100%</p>
               <p className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] mt-3 text-gray-500 dark:text-gray-400">Day Scholars</p>
             </div>
-
+            
             {/* Top Right */}
             <div className={`flex flex-col items-center justify-center py-8 px-4 text-center border-b md:border-b-0 md:border-r border-gray-100 dark:border-gray-700 ${isDarkMode ? "hover:bg-gray-800/50" : "hover:bg-gray-50"} transition-colors`}>
               <p className="text-4xl sm:text-5xl font-black text-[#C59B27] tracking-tight">842</p>
               <p className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] mt-3 text-gray-500 dark:text-gray-400">Students</p>
             </div>
-
+            
             {/* Bottom Left */}
             <div className={`flex flex-col items-center justify-center py-8 px-4 text-center md:border-r border-gray-100 dark:border-gray-700 ${isDarkMode ? "hover:bg-gray-800/50" : "hover:bg-gray-50"} transition-colors`}>
               <p className="text-4xl sm:text-5xl font-black text-[#C59B27] tracking-tight">14</p>
               <p className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] mt-3 text-gray-500 dark:text-gray-400">Classrooms</p>
             </div>
-
+            
             {/* Bottom Right */}
             <div className={`flex flex-col items-center justify-center py-8 px-4 text-center ${isDarkMode ? "hover:bg-gray-800/50" : "hover:bg-gray-50"} transition-colors`}>
               <p className="text-4xl sm:text-5xl font-black text-[#C59B27] tracking-tight">30+</p>
@@ -476,7 +476,7 @@ export default function SchoolHomeClient({
           <div className="text-center mb-12">
             <h2 className="text-4xl font-black">Campus Gallery</h2>
             <p className="opacity-70 mt-2">A glimpse into our vibrant school life</p>
-
+            
             <div className="flex flex-wrap justify-center gap-2 mt-8">
               {["All", "Campus", "Classrooms", "Sports", "Cultural", "Events"].map(cat => (
                 <button key={cat} onClick={() => setGalleryFilter(cat)} className={`px-5 py-2 rounded-full text-xs font-bold transition-all ${galleryFilter === cat ? "bg-[#C59B27] text-[#0F1E36] shadow-md scale-105" : "bg-gray-200 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-300"}`}>
@@ -513,7 +513,7 @@ export default function SchoolHomeClient({
       {/* EVENTS & NEWS */}
       <section id="events" className={`px-5 py-24 ${isDarkMode ? "bg-[#0B1221]" : "bg-[#F8F7F2]"}`}>
         <div className="mx-auto max-w-6xl grid lg:grid-cols-2 gap-16">
-
+          
           {/* EVENTS */}
           <div>
             <h2 className="text-3xl font-black mb-8 flex items-center gap-3">
@@ -561,7 +561,7 @@ export default function SchoolHomeClient({
             <div className="space-y-6 max-h-[600px] overflow-y-auto pr-2 scrollbar-hide">
               {filteredNotices.map((n, i) => (
                 <div key={i} onClick={() => setSelectedNotice(n)} className={`rounded-3xl border overflow-hidden cursor-pointer hover-lift group transition-all ${isDarkMode ? "bg-[#1E293B] border-gray-700" : "bg-white border-gray-100"}`}>
-
+                  
                   {/* IMAGE 2 STYLE FALLBACK DESIGN */}
                   <div className={`h-48 w-full relative overflow-hidden flex flex-col items-center justify-center ${(!n.image && !n.imageUrl) ? "bg-[#0F1E36]" : ""}`}>
                     {n.image ? (
@@ -624,7 +624,7 @@ export default function SchoolHomeClient({
       <section className={`px-5 py-24 ${isDarkMode ? "bg-[#0B1221]" : "bg-[#F8F7F2]"}`}>
         <div className="mx-auto max-w-6xl">
           <h2 className="text-4xl font-black text-center mb-16">Guiding Our Vision</h2>
-
+          
           {/* CENTERED SECRETARY CARD */}
           <div className={`rounded-[2rem] overflow-hidden border hover-lift group mb-16 flex flex-col md:flex-row shadow-[0_30px_60px_-15px_rgba(0,0,0,0.1)] ${isDarkMode ? "bg-[#1E293B] border-gray-700" : "bg-white border-gray-100"}`}>
              <div className="md:w-1/3 h-80 md:h-auto relative bg-gradient-to-br from-[#0F1E36] to-[#1E293B] flex items-center justify-center overflow-hidden">
@@ -637,8 +637,8 @@ export default function SchoolHomeClient({
                 <p className="text-lg opacity-70 leading-relaxed mb-10 max-w-2xl mx-auto font-medium">
                   Dedicated to providing an environment where every child discovers their unique strengths. At MTMS, we believe that education is a partnership between the school, the teachers, and the parents.
                 </p>
-                <button
-                  onClick={() => setShowSecretaryModal(true)}
+                <button 
+                  onClick={() => setShowSecretaryModal(true)} 
                   className="bg-[#0F1E36] text-white px-10 py-5 rounded-2xl font-black hover:bg-[#C59B27] hover:text-[#0F1E36] transition-all shadow-[0_15px_30px_rgba(15,30,54,0.3)] hover:-translate-y-1 w-full max-w-md flex items-center justify-center gap-3 text-lg border border-white/10"
                 >
                   <svg className="w-6 h-6 text-blue-200 group-hover:text-[#0F1E36] transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
@@ -680,19 +680,19 @@ export default function SchoolHomeClient({
           <div className={`rounded-3xl border overflow-hidden shadow-2xl ${isDarkMode ? "border-gray-700 bg-[#1E293B]" : "border-gray-100 bg-[#F8F7F2]"}`}>
             {dCalendar.map((cal, i) => (
               <div key={i} className={`grid grid-cols-[auto_1fr_auto] gap-4 sm:gap-6 items-center p-5 sm:p-6 border-b last:border-0 transition hover:bg-[#C59B27]/5 ${isDarkMode ? "border-gray-700" : "border-gray-200"}`}>
-
+                
                 {/* Type Badge */}
                 <div className="flex justify-start">
                   <span className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-[10px] sm:text-xs font-bold tracking-wider whitespace-nowrap ${cal.type === "Exam" ? "bg-red-100 text-red-700" : cal.type === "Holiday" ? "bg-green-100 text-green-700" : "bg-[#C59B27]/20 text-[#C59B27]"}`}>
                     {cal.type}
                   </span>
                 </div>
-
+                
                 {/* Title */}
                 <div className="font-bold text-sm sm:text-lg leading-snug">
                   {cal.title}
                 </div>
-
+                
                 {/* Date */}
                 <div className="text-xs sm:text-sm font-bold text-[#C59B27] text-right whitespace-nowrap">
                   {cal.date}
@@ -776,10 +776,10 @@ export default function SchoolHomeClient({
       <section id="admissions" className={`px-5 py-24 ${isDarkMode ? "bg-[#0F172A] text-white" : "bg-[#0F1E36] text-white"}`}>
         <div className="mx-auto max-w-4xl">
           <h2 className="text-4xl sm:text-5xl font-black text-center mb-12">Fee Estimator</h2>
-
+          
           <div className="mb-12 flex justify-center perspective-1000">
             <div className="relative w-full max-w-xl rounded-[2rem] border border-[#C59B27]/50 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl p-6 sm:p-10 shadow-[0_30px_60px_rgba(0,0,0,0.6)] transform hover:rotate-x-0 rotate-x-6 transition duration-500">
-
+              
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-white/10 pb-6 gap-4">
                 <div className="flex items-center gap-4">
                   <span className="text-4xl animate-float drop-shadow-lg">🧮</span>
@@ -876,7 +876,7 @@ export default function SchoolHomeClient({
               </div>
             )}
           </div>
-
+          
           <div className="mt-8 text-center text-sm font-bold text-red-300 bg-red-500/10 p-5 rounded-xl border border-red-500/20 backdrop-blur-sm shadow-lg">
             ⚠️ Informational estimator only; no online payment. Please pay fees at the school office.
           </div>
@@ -887,7 +887,7 @@ export default function SchoolHomeClient({
       <section id="contact" className={`px-5 py-24 ${isDarkMode ? "bg-[#0B1221]" : "bg-white"}`}>
         <div className="mx-auto max-w-6xl">
           <h2 className="text-4xl font-black text-center mb-16">Contact & Location</h2>
-
+          
           <div className="grid md:grid-cols-3 gap-8 mb-12">
             <div className={`p-8 rounded-3xl border hover-lift ${isDarkMode ? "bg-[#1E293B] border-gray-700" : "bg-[#F8F7F2] border-gray-200"}`}>
               <div className="w-14 h-14 bg-[#C59B27]/20 rounded-2xl flex items-center justify-center text-3xl mb-6 shadow-inner">📍</div>
@@ -909,7 +909,7 @@ export default function SchoolHomeClient({
           <div className={`p-8 sm:p-10 rounded-3xl border shadow-lg ${isDarkMode ? "bg-[#1E293B] border-gray-700" : "bg-[#F8F7F2] border-gray-200"}`}>
             <h3 className="text-2xl font-black mb-8 flex items-center gap-3"><span className="text-[#C59B27] text-3xl">🗺️</span> Get Directions</h3>
             <form onSubmit={handleGetDirections} className="flex flex-col md:flex-row gap-4">
-              <input
+              <input 
                 type="text" placeholder="Enter your starting address..." value={userAddress} onChange={(e) => setUserAddress(e.target.value)}
                 className={`flex-1 p-5 rounded-xl border font-bold focus:outline-none focus:ring-2 focus:ring-[#C59B27] ${isDarkMode ? "bg-gray-800 border-gray-600 text-white" : "bg-white border-gray-300 text-gray-800"}`} required
               />
@@ -936,7 +936,7 @@ export default function SchoolHomeClient({
         <div className="max-w-4xl mx-auto flex flex-col items-center relative z-10">
           <h2 className="text-3xl font-black tracking-widest text-[#C59B27]">MOTHER TERESA MEMORIAL SCHOOL</h2>
           <p className="text-sm font-bold text-gray-400 mt-4 tracking-widest">UDISE Code: {schoolInfo?.udiseCode || "20090212202"}</p>
-
+          
           <div className="flex flex-wrap justify-center gap-10 mt-10 mb-10 text-sm font-bold">
             <Link href="/privacy" className="hover:text-[#C59B27] transition">Privacy Policy</Link>
             <Link href="/terms" className="hover:text-[#C59B27] transition">Terms & Conditions</Link>
@@ -945,29 +945,22 @@ export default function SchoolHomeClient({
 
           <p className="text-xs font-medium text-gray-500 mt-2">© 2026 Mother Teresa Memorial School. All rights reserved.</p>
 
-          <div className="mt-8 flex flex-col items-center gap-3 bg-white/5 p-6 rounded-2xl border border-white/10 w-full max-w-sm">
-            <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">Technology Used & Created By</p>
-            <p className="text-lg font-black text-white">Team Rythmyrm</p>
-            <a href="mailto:rythmyrm45@gmail.com" className="bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white px-6 py-2 rounded-full border border-gray-600 transition-all flex items-center gap-2 text-sm font-bold shadow-lg">
-              ✉️ rythmyrm45@gmail.com
-            </a>
-          </div>
         </div>
       </footer>
 
       {/* POPUP MODALS */}
-
+      
       {/* Secretary Modal */}
       {showSecretaryModal && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 p-4 backdrop-blur-md animate-in fade-in" onClick={() => setShowSecretaryModal(false)}>
           <div className={`relative w-full max-w-2xl rounded-[2rem] shadow-2xl animate-in zoom-in-95 flex flex-col max-h-[90vh] overflow-hidden ${isDarkMode ? "bg-[#1E293B] border border-gray-700 text-white" : "bg-white"}`} onClick={e => e.stopPropagation()}>
-
+            
             <div className="bg-gradient-to-r from-[#0F1E36] to-[#1E293B] p-6 sm:p-10 text-white relative shrink-0">
               <button onClick={() => setShowSecretaryModal(false)} className="absolute top-4 right-4 sm:top-6 sm:right-6 w-10 h-10 bg-white/10 rounded-full flex items-center justify-center font-bold hover:bg-red-500 transition z-10 text-white">✕</button>
               <h3 className="text-2xl sm:text-4xl font-black mb-2 pr-14">Welcome to MTMS</h3>
               <p className="text-[#C59B27] font-bold text-sm sm:text-lg">Message from the Secretary</p>
             </div>
-
+            
             <div className="p-6 sm:p-10 space-y-4 sm:space-y-5 text-base sm:text-lg leading-relaxed font-medium overflow-y-auto rounded-b-[2rem]">
               <p>Dear Parents and Students,</p>
               <p>It gives me immense pleasure to welcome you to Mother Teresa Memorial School. Our goal is not just academic excellence, but to instill strong moral values, discipline, and a sense of responsibility in every child.</p>
@@ -1061,7 +1054,7 @@ export default function SchoolHomeClient({
 
       {/* SCROLL TO TOP */}
       {showTopBtn && (
-        <button
+        <button 
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
           className="fixed bottom-32 right-8 z-[80] h-14 w-14 sm:h-16 sm:w-16 rounded-full bg-[#C59B27] text-[#0F1E36] shadow-[0_15px_30px_rgba(197,155,39,0.5)] flex items-center justify-center hover:bg-yellow-500 transition-all transform hover:-translate-y-2 border-4 border-white dark:border-gray-800"
           title="Go to Top"
@@ -1084,7 +1077,7 @@ export default function SchoolHomeClient({
               </div>
               <button onClick={() => setChatOpen(false)} className="text-gray-400 hover:text-white bg-white/10 w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center transition">✕</button>
             </div>
-
+            
             <div className={`h-80 overflow-y-auto p-4 sm:p-6 space-y-4 ${isDarkMode ? "bg-[#0F172A]" : "bg-[#F8F7F2]"}`}>
               {messages.map((msg, i) => (
                 <div key={i} className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`}>
@@ -1111,7 +1104,7 @@ export default function SchoolHomeClient({
             </div>
           </div>
         )}
-
+        
         <button onClick={() => setChatOpen(!chatOpen)} className="relative flex items-center justify-center h-16 w-16 sm:h-20 sm:w-20 bg-[#0F1E36] rounded-full shadow-[0_15px_40px_rgba(15,30,54,0.5)] hover:scale-110 hover:bg-[#C59B27] transition-all duration-300 border-4 border-[#C59B27] group">
           <svg viewBox="0 0 100 100" className="w-10 h-10 sm:w-14 sm:h-14 group-hover:scale-110 transition drop-shadow-md">
             <ellipse cx="50" cy="65" rx="35" ry="25" fill="#2E7D32" />
