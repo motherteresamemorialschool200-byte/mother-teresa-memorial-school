@@ -1,14 +1,10 @@
 import { client } from '@/sanity/lib/client';
 import Link from 'next/link';
 
-// This prevents the Next.js 16 build cache error
 export const dynamic = 'force-dynamic';
 
 export default async function MandatoryDisclosure() {
-  // Fetch the general school info
   const schoolInfo = await client.fetch(`*[_type == "schoolInfo"][0]`);
-  
-  // Fetch the uploaded disclosure documents
   const disclosures = await client.fetch(`*[_type == "mandatoryDisclosure"]`);
 
   return (
@@ -22,7 +18,6 @@ export default async function MandatoryDisclosure() {
 
       <main className="max-w-4xl mx-auto mt-10 p-6 bg-white rounded-xl shadow-sm border border-gray-200">
         
-        {/* General Info Section */}
         <div className="mb-10 pb-6 border-b border-gray-200">
           <h2 className="text-2xl font-extrabold mb-4 text-[#C59B27]">General Information</h2>
           <div className="grid sm:grid-cols-2 gap-4 text-sm opacity-80">
@@ -35,7 +30,6 @@ export default async function MandatoryDisclosure() {
           </div>
         </div>
 
-        {/* Documents Section */}
         <h2 className="text-2xl font-extrabold mb-6 text-[#C59B27]">Official Documents</h2>
         
         {disclosures && disclosures.length > 0 ? (
