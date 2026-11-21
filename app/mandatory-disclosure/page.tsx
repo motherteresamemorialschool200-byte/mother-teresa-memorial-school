@@ -1,7 +1,6 @@
 import { client } from '@/sanity/lib/client';
 import Link from 'next/link';
 
-export const dynamic = 'force-dynamic';
 
 export default async function MandatoryDisclosure() {
   const schoolInfo = await client.fetch(`*[_type == "schoolInfo"][0]`);
@@ -34,7 +33,7 @@ export default async function MandatoryDisclosure() {
         
         {disclosures && disclosures.length > 0 ? (
           <div className="space-y-3">
-            {disclosures.map((doc: any) => (
+            {disclosures.map((doc: { _id: string; category?: string; title?: string; file?: { asset?: { url?: string } } }) => (
               <div key={doc._id} className="flex flex-col sm:flex-row justify-between items-start sm:items-center p-4 bg-gray-50 rounded-lg border border-gray-100">
                 <div className="mb-2 sm:mb-0">
                   <span className="text-xs font-bold text-[#C59B27] uppercase tracking-wider block mb-1">
