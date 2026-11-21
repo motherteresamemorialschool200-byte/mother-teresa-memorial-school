@@ -8,9 +8,11 @@ interface Disclosure {
   file: { asset: { url: string } };
 }
 
-export default async function MandatoryDisclosure() {
-  // Fetch disclosure documents from Sanity
-  const disclosures: Disclosure[] = await client.fetch(`*[_type == "disclosure"] | order(category asc)`);
+async function getDisclosureData() {
+  "use cache"; // <-- Add this line
+  const query = `*[_type == "mandatoryDisclosure"][0]`; 
+  return await client.fetch(query);
+}
   
   // Fetch general info
   const schoolInfo = await client.fetch(`*[_type == "schoolInfo"][0]`);
