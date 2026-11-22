@@ -18,6 +18,16 @@ interface Faculty { _id?: string; name: string; role: string; bio?: string; imag
 interface Achievement { _id?: string; title: string; description?: string; category?: string; image?: ImageSource; }
 interface CalendarItem { _id?: string; title: string; date: string; type: string; }
 interface FAQ { _id?: string; question: string; answer: string; }
+interface Staff {
+  _id?: string;
+  name: string;
+  role: string;
+  qualification?: string;
+  age?: number;
+  fatherName?: string;
+  image?: ImageSource;
+  imageUrl?: string;
+}
 
 const urlFor = (source: ImageSource) => builder.image(source);
 
@@ -64,6 +74,24 @@ const fallbackFaculty: Faculty[] = [
   { name: "Nirmal Tudu", role: "Wise Principal", bio: "Bringing wisdom and compassionate leadership to our academic community.", image: undefined },
 ];
 
+const fallbackTeachingStaff: Staff[] = [
+  { name: "Anil Kumar Das", role: "Mathematics Teacher", qualification: "M.Tech, B.Ed", age: 38, fatherName: "Ramesh Das", imageUrl: "" },
+  { name: "Priya Sharma", role: "Science Teacher", qualification: "B.Tech, B.Ed", age: 32, fatherName: "Suresh Sharma", imageUrl: "" },
+  { name: "Sunita Murmu", role: "English Teacher", qualification: "M.A. English, B.Ed", age: 35, fatherName: "Lakhan Murmu", imageUrl: "" },
+  { name: "Rakesh Hembrom", role: "Social Science Teacher", qualification: "M.A., B.Ed", age: 40, fatherName: "Mohan Hembrom", imageUrl: "" },
+  { name: "Kavita Singh", role: "Hindi Teacher", qualification: "M.A. Hindi, B.Ed", age: 34, fatherName: "Ram Singh", imageUrl: "" },
+  { name: "Deepak Oraon", role: "Computer Teacher", qualification: "B.Tech (CS), B.Ed", age: 30, fatherName: "Late Som Oraon", imageUrl: "" },
+];
+
+const fallbackNonTeachingStaff: Staff[] = [
+  { name: "Suresh Marandi", role: "School Driver", qualification: "10th Pass, Heavy License", age: 42, fatherName: "Late Budhan Marandi", imageUrl: "" },
+  { name: "Ramesh Kisku", role: "Bus Driver", qualification: "8th Pass, Heavy License", age: 45, fatherName: "Nakul Kisku", imageUrl: "" },
+  { name: "Mohan Tudu", role: "Peon", qualification: "8th Pass", age: 38, fatherName: "Lakhan Tudu", imageUrl: "" },
+  { name: "Sanjay Murmu", role: "Security Guard", qualification: "10th Pass", age: 40, fatherName: "Dinesh Murmu", imageUrl: "" },
+  { name: "Asha Devi", role: "Cook / Helper", qualification: "5th Pass", age: 36, fatherName: "Ramdev Prasad", imageUrl: "" },
+  { name: "Vijay Soren", role: "Cleaner", qualification: "8th Pass", age: 34, fatherName: "Late Som Soren", imageUrl: "" },
+];
+
 const fallbackAchievements: Achievement[] = [
   { title: "District Level Kabaddi Champions", description: "Our school Kabaddi team brought home the 1st place trophy in the Sahibganj district championship.", category: "Sports" },
   { title: "Inter-School Science Quiz Winners", description: "Class 8 students secured 1st place in the regional science quiz for their innovative solar model.", category: "Academic" },
@@ -102,10 +130,12 @@ const academicsData = [
 ];
 
 export default function SchoolHomeClient({ 
-  schoolInfo, notices, gallery, admissions, events, faculty, achievements, calendar, faqs 
+  schoolInfo, notices, gallery, admissions, events, faculty, achievements, calendar, faqs,
+  teachingStaff, nonTeachingStaff
 }: { 
   schoolInfo: SchoolInfo | null; notices: Notice[]; gallery: GalleryItem[]; admissions: Admission[];
   events: Event[]; faculty: Faculty[]; achievements: Achievement[]; calendar: CalendarItem[]; faqs: FAQ[];
+  teachingStaff?: Staff[]; nonTeachingStaff?: Staff[];
 }) {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -118,6 +148,11 @@ export default function SchoolHomeClient({
   const [selectedGalleryImg, setSelectedGalleryImg] = useState<GalleryItem | null>(null);
   const [selectedFacility, setSelectedFacility] = useState<null | typeof facilitiesData[0]>(null);
   const [selectedAchievement, setSelectedAchievement] = useState<Achievement | null>(null);
+  const [selectedStaff, setSelectedStaff] = useState<Staff | null>(null);
+
+  // Staff expansion
+  const [showAllTeaching, setShowAllTeaching] = useState(false);
+  const [showAllNonTeaching, setShowAllNonTeaching] = useState(false);
 
   // Filters
   const [noticeFilter, setNoticeFilter] = useState("All");
@@ -157,6 +192,8 @@ export default function SchoolHomeClient({
   const dAchievements = achievements?.length ? achievements : fallbackAchievements;
   const dCalendar = calendar?.length ? calendar : fallbackCalendar;
   const dFaqs = faqs?.length ? faqs : fallbackFaqs;
+  const dTeachingStaff = teachingStaff?.length ? teachingStaff : fallbackTeachingStaff;
+  const dNonTeachingStaff = nonTeachingStaff?.length ? nonTeachingStaff : fallbackNonTeachingStaff;
 
   // Fee Calculations
   const liveClassData = admissions?.find((a) => a.classLevel === selectedClass);
@@ -223,6 +260,58 @@ export default function SchoolHomeClient({
   const filteredGallery = galleryFilter === "All" ? dGallery : dGallery.filter(g => g.category === galleryFilter);
   const filteredNotices = noticeFilter === "All" ? dNotices : dNotices.filter(n => n.category === noticeFilter);
 
+  // Visible staff slices
+  const visibleTeaching = showAllTeaching ? dTeachingStaff : dTeachingStaff.slice(0, 3);
+  const visibleNonTeaching = showAllNonTeaching ? dNonTeachingStaff : dNonTeachingStaff.slice(0, 3);
+
+  // Reusable staff card
+  const StaffCard = ({ s }: { s: Staff }) => (
+    <div className={`rounded-3xl overflow-hidden border hover-lift group ${isDarkMode ? "bg-[#1E293B] border-gray-700" : "bg-white border-gray-100"}`}>
+      <div className="h-56 relative bg-gradient-to-br from-[#0F1E36] to-[#1E293B] flex items-center justify-center overflow-hidden">
+        {s.image ? (
+          <Image src={urlFor(s.image).url()} alt={s.name} fill className="object-cover group-hover:scale-105 transition duration-500" />
+        ) : s.imageUrl ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={s.imageUrl} alt={s.name} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+        ) : (
+          <span className="text-[#C59B27] text-8xl font-black opacity-30 group-hover:scale-110 transition duration-500">
+            {s.name.charAt(0)}
+          </span>
+        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+        <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between">
+          <span className="inline-block px-3 py-1 rounded-full text-[10px] font-bold bg-[#C59B27] text-[#0F1E36] uppercase tracking-wider">
+            {s.role}
+          </span>
+          {typeof s.age === "number" && (
+            <span className="inline-block px-2.5 py-1 rounded-full text-[10px] font-bold bg-white/90 text-[#0F1E36]">
+              Age {s.age}
+            </span>
+          )}
+        </div>
+      </div>
+      <div className="p-5">
+        <h3 className="font-black text-lg leading-tight">{s.name}</h3>
+        {s.fatherName && (
+          <p className="text-xs opacity-60 mt-1 font-medium">S/o {s.fatherName}</p>
+        )}
+        {s.qualification && (
+          <div className="mt-3">
+            <span className="inline-block px-2.5 py-1 rounded-md text-[10px] font-bold bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300">
+              🎓 {s.qualification}
+            </span>
+          </div>
+        )}
+        <button
+          onClick={() => setSelectedStaff(s)}
+          className="mt-4 text-xs font-black text-[#C59B27] flex items-center gap-1 hover:gap-2 transition-all"
+        >
+          View Full Profile <span>→</span>
+        </button>
+      </div>
+    </div>
+  );
+
   return (
     <main className={`relative min-h-screen font-sans overflow-hidden transition-colors duration-300 ${isDarkMode ? "dark bg-[#0B1221] text-gray-200" : "bg-[#FDFDFD] text-[#0F1E36]"}`}>
       
@@ -237,8 +326,6 @@ export default function SchoolHomeClient({
         .hover-lift:hover { transform: translateY(-10px) scale(1.02); box-shadow: 0 40px 70px -20px rgba(15, 30, 54, 0.2); }
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .bg-pattern { background-image: radial-gradient(#C59B27 1px, transparent 1px); background-size: 24px 24px; opacity: 0.08; }
-        
-        /* TWINKLING STARS */
         @keyframes twinkle {
           0%, 100% { opacity: 0.2; transform: scale(0.8); }
           50% { opacity: 1; transform: scale(1.2); box-shadow: 0 0 15px #E5C66C; }
@@ -293,7 +380,6 @@ export default function SchoolHomeClient({
         <div className="absolute inset-0 bg-pattern" />
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#0F1E36]/95" />
         
-        {/* TWINKLING STARS */}
         <div className="star" style={{ top: '15%', left: '10%', width: '4px', height: '4px', animationDelay: '0s' }}></div>
         <div className="star" style={{ top: '30%', left: '20%', width: '6px', height: '6px', animationDelay: '1s' }}></div>
         <div className="star" style={{ top: '20%', right: '15%', width: '5px', height: '5px', animationDelay: '0.5s' }}></div>
@@ -323,35 +409,26 @@ export default function SchoolHomeClient({
         </div>
       </section>
 
-      {/* STATS (FLASH CARD STYLE) */}
+      {/* STATS */}
       <section className={`relative z-20 pt-16 pb-8 px-5 ${isDarkMode ? "bg-[#0B1221]" : "bg-[#F8F7F2]"}`}>
         <div className="mx-auto max-w-5xl">
           <div className={`grid grid-cols-2 md:grid-cols-4 rounded-3xl overflow-hidden shadow-[0_20px_40px_-15px_rgba(15,30,54,0.15)] border ${isDarkMode ? "bg-[#1E293B] border-gray-700" : "bg-white border-gray-100"}`}>
-            
-            {/* Top Left */}
             <div className={`flex flex-col items-center justify-center py-8 px-4 text-center border-b md:border-b-0 md:border-r border-gray-100 dark:border-gray-700 ${isDarkMode ? "hover:bg-gray-800/50" : "hover:bg-gray-50"} transition-colors`}>
               <p className="text-4xl sm:text-5xl font-black text-[#C59B27] tracking-tight">100%</p>
               <p className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] mt-3 text-gray-500 dark:text-gray-400">Day Scholars</p>
             </div>
-            
-            {/* Top Right */}
             <div className={`flex flex-col items-center justify-center py-8 px-4 text-center border-b md:border-b-0 md:border-r border-gray-100 dark:border-gray-700 ${isDarkMode ? "hover:bg-gray-800/50" : "hover:bg-gray-50"} transition-colors`}>
               <p className="text-4xl sm:text-5xl font-black text-[#C59B27] tracking-tight">842</p>
               <p className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] mt-3 text-gray-500 dark:text-gray-400">Students</p>
             </div>
-            
-            {/* Bottom Left */}
             <div className={`flex flex-col items-center justify-center py-8 px-4 text-center md:border-r border-gray-100 dark:border-gray-700 ${isDarkMode ? "hover:bg-gray-800/50" : "hover:bg-gray-50"} transition-colors`}>
               <p className="text-4xl sm:text-5xl font-black text-[#C59B27] tracking-tight">14</p>
               <p className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] mt-3 text-gray-500 dark:text-gray-400">Classrooms</p>
             </div>
-            
-            {/* Bottom Right */}
             <div className={`flex flex-col items-center justify-center py-8 px-4 text-center ${isDarkMode ? "hover:bg-gray-800/50" : "hover:bg-gray-50"} transition-colors`}>
               <p className="text-4xl sm:text-5xl font-black text-[#C59B27] tracking-tight">30+</p>
               <p className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] mt-3 text-gray-500 dark:text-gray-400">Teachers</p>
             </div>
-
           </div>
         </div>
       </section>
@@ -470,7 +547,7 @@ export default function SchoolHomeClient({
         </div>
       </section>
 
-      {/* CAMPUS LIFE (GALLERY) */}
+      {/* CAMPUS LIFE */}
       <section id="campus-life" className={`px-5 py-24 ${isDarkMode ? "bg-[#0F172A]" : "bg-white"}`}>
         <div className="mx-auto max-w-6xl">
           <div className="text-center mb-12">
@@ -510,11 +587,10 @@ export default function SchoolHomeClient({
         </div>
       </section>
 
-      {/* EVENTS & NEWS */}
+      {/* EVENTS & NOTICES */}
       <section id="events" className={`px-5 py-24 ${isDarkMode ? "bg-[#0B1221]" : "bg-[#F8F7F2]"}`}>
         <div className="mx-auto max-w-6xl grid lg:grid-cols-2 gap-16">
           
-          {/* EVENTS */}
           <div>
             <h2 className="text-3xl font-black mb-8 flex items-center gap-3">
               <span className="w-2 h-8 bg-[#C59B27] rounded-full"></span> Upcoming Events
@@ -546,7 +622,6 @@ export default function SchoolHomeClient({
             </div>
           </div>
 
-          {/* NEWS / NOTICES */}
           <div>
             <h2 className="text-3xl font-black mb-8 flex items-center gap-3">
               <span className="w-2 h-8 bg-[#C59B27] rounded-full"></span> Important Notices
@@ -561,8 +636,6 @@ export default function SchoolHomeClient({
             <div className="space-y-6 max-h-[600px] overflow-y-auto pr-2 scrollbar-hide">
               {filteredNotices.map((n, i) => (
                 <div key={i} onClick={() => setSelectedNotice(n)} className={`rounded-3xl border overflow-hidden cursor-pointer hover-lift group transition-all ${isDarkMode ? "bg-[#1E293B] border-gray-700" : "bg-white border-gray-100"}`}>
-                  
-                  {/* IMAGE 2 STYLE FALLBACK DESIGN */}
                   <div className={`h-48 w-full relative overflow-hidden flex flex-col items-center justify-center ${(!n.image && !n.imageUrl) ? "bg-[#0F1E36]" : ""}`}>
                     {n.image ? (
                       <Image src={urlFor(n.image).url()} alt={n.title || "Notice"} fill className="object-cover group-hover:scale-105 transition duration-500" />
@@ -595,7 +668,6 @@ export default function SchoolHomeClient({
                       Read Full Notice <span className="text-xl leading-none group-hover:translate-x-1 transition">→</span>
                     </div>
                   </div>
-
                 </div>
               ))}
             </div>
@@ -625,7 +697,6 @@ export default function SchoolHomeClient({
         <div className="mx-auto max-w-6xl">
           <h2 className="text-4xl font-black text-center mb-16">Guiding Our Vision</h2>
           
-          {/* CENTERED SECRETARY CARD */}
           <div className={`rounded-[2rem] overflow-hidden border hover-lift group mb-16 flex flex-col md:flex-row shadow-[0_30px_60px_-15px_rgba(0,0,0,0.1)] ${isDarkMode ? "bg-[#1E293B] border-gray-700" : "bg-white border-gray-100"}`}>
              <div className="md:w-1/3 h-80 md:h-auto relative bg-gradient-to-br from-[#0F1E36] to-[#1E293B] flex items-center justify-center overflow-hidden">
                 <span className="text-[#C59B27] text-9xl font-black opacity-30 group-hover:scale-110 transition duration-500">B</span>
@@ -647,7 +718,6 @@ export default function SchoolHomeClient({
              </div>
           </div>
 
-          {/* OTHER FACULTY */}
           <div className="grid sm:grid-cols-3 gap-8">
             {dFaculty.filter(f => f.role !== "Secretary").map((f, i) => (
               <div key={i} className={`rounded-3xl overflow-hidden border hover-lift group ${isDarkMode ? "bg-[#1E293B] border-gray-700" : "bg-white border-gray-100"}`}>
@@ -670,6 +740,70 @@ export default function SchoolHomeClient({
         </div>
       </section>
 
+      {/* TEACHING STAFF */}
+      <section className={`px-5 py-24 ${isDarkMode ? "bg-[#0F172A]" : "bg-white"}`}>
+        <div className="mx-auto max-w-6xl">
+          <div className="text-center mb-12">
+            <span className="text-xs font-bold tracking-[0.2em] text-[#C59B27] uppercase">Our Team</span>
+            <h2 className="text-4xl font-black mt-2">Teaching Staff</h2>
+            <p className="opacity-70 mt-2 max-w-2xl mx-auto">Dedicated educators shaping young minds with passion and expertise.</p>
+          </div>
+
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {visibleTeaching.map((s, i) => (
+              <StaffCard key={s._id || i} s={s} />
+            ))}
+          </div>
+
+          {dTeachingStaff.length > 3 && (
+            <div className="text-center mt-12">
+              <button
+                onClick={() => setShowAllTeaching(!showAllTeaching)}
+                className="px-8 py-4 rounded-xl bg-[#0F1E36] text-white font-black hover:bg-[#C59B27] hover:text-[#0F1E36] transition-all shadow-lg hover:-translate-y-1 inline-flex items-center gap-3"
+              >
+                {showAllTeaching ? (
+                  <>Show Less <span className="text-lg">↑</span></>
+                ) : (
+                  <>See More Staff ({dTeachingStaff.length - 3} more) <span className="text-lg">→</span></>
+                )}
+              </button>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* NON-TEACHING STAFF */}
+      <section className={`px-5 py-24 ${isDarkMode ? "bg-[#0B1221]" : "bg-[#F8F7F2]"}`}>
+        <div className="mx-auto max-w-6xl">
+          <div className="text-center mb-12">
+            <span className="text-xs font-bold tracking-[0.2em] text-[#C59B27] uppercase">Support Team</span>
+            <h2 className="text-4xl font-black mt-2">Non-Teaching Staff</h2>
+            <p className="opacity-70 mt-2 max-w-2xl mx-auto">The backbone of our daily operations — drivers, guards, helpers, and more.</p>
+          </div>
+
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {visibleNonTeaching.map((s, i) => (
+              <StaffCard key={s._id || i} s={s} />
+            ))}
+          </div>
+
+          {dNonTeachingStaff.length > 3 && (
+            <div className="text-center mt-12">
+              <button
+                onClick={() => setShowAllNonTeaching(!showAllNonTeaching)}
+                className="px-8 py-4 rounded-xl bg-[#0F1E36] text-white font-black hover:bg-[#C59B27] hover:text-[#0F1E36] transition-all shadow-lg hover:-translate-y-1 inline-flex items-center gap-3"
+              >
+                {showAllNonTeaching ? (
+                  <>Show Less <span className="text-lg">↑</span></>
+                ) : (
+                  <>See More Staff ({dNonTeachingStaff.length - 3} more) <span className="text-lg">→</span></>
+                )}
+              </button>
+            </div>
+          )}
+        </div>
+      </section>
+
       {/* ACADEMIC CALENDAR */}
       <section className={`px-5 py-24 ${isDarkMode ? "bg-[#0F172A]" : "bg-white"}`}>
         <div className="mx-auto max-w-4xl">
@@ -680,24 +814,17 @@ export default function SchoolHomeClient({
           <div className={`rounded-3xl border overflow-hidden shadow-2xl ${isDarkMode ? "border-gray-700 bg-[#1E293B]" : "border-gray-100 bg-[#F8F7F2]"}`}>
             {dCalendar.map((cal, i) => (
               <div key={i} className={`grid grid-cols-[auto_1fr_auto] gap-4 sm:gap-6 items-center p-5 sm:p-6 border-b last:border-0 transition hover:bg-[#C59B27]/5 ${isDarkMode ? "border-gray-700" : "border-gray-200"}`}>
-                
-                {/* Type Badge */}
                 <div className="flex justify-start">
                   <span className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-[10px] sm:text-xs font-bold tracking-wider whitespace-nowrap ${cal.type === "Exam" ? "bg-red-100 text-red-700" : cal.type === "Holiday" ? "bg-green-100 text-green-700" : "bg-[#C59B27]/20 text-[#C59B27]"}`}>
                     {cal.type}
                   </span>
                 </div>
-                
-                {/* Title */}
                 <div className="font-bold text-sm sm:text-lg leading-snug">
                   {cal.title}
                 </div>
-                
-                {/* Date */}
                 <div className="text-xs sm:text-sm font-bold text-[#C59B27] text-right whitespace-nowrap">
                   {cal.date}
                 </div>
-
               </div>
             ))}
           </div>
@@ -779,7 +906,6 @@ export default function SchoolHomeClient({
           
           <div className="mb-12 flex justify-center perspective-1000">
             <div className="relative w-full max-w-xl rounded-[2rem] border border-[#C59B27]/50 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl p-6 sm:p-10 shadow-[0_30px_60px_rgba(0,0,0,0.6)] transform hover:rotate-x-0 rotate-x-6 transition duration-500">
-              
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-white/10 pb-6 gap-4">
                 <div className="flex items-center gap-4">
                   <span className="text-4xl animate-float drop-shadow-lg">🧮</span>
@@ -793,7 +919,6 @@ export default function SchoolHomeClient({
                   <p className="text-4xl sm:text-5xl font-black text-[#E5C66C] drop-shadow-md">₹{grandTotal.toLocaleString("en-IN")}</p>
                 </div>
               </div>
-
             </div>
           </div>
 
@@ -883,7 +1008,7 @@ export default function SchoolHomeClient({
         </div>
       </section>
 
-      {/* CONTACT & MAPS */}
+      {/* CONTACT */}
       <section id="contact" className={`px-5 py-24 ${isDarkMode ? "bg-[#0B1221]" : "bg-white"}`}>
         <div className="mx-auto max-w-6xl">
           <h2 className="text-4xl font-black text-center mb-16">Contact & Location</h2>
@@ -932,51 +1057,39 @@ export default function SchoolHomeClient({
 
       {/* FOOTER */}
       <footer className={`px-4 py-12 sm:py-14 text-center ${isDarkMode ? "bg-black" : "bg-[#091426]"} text-white relative overflow-hidden`}>
-  <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#C59B27] to-transparent" />
+        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#C59B27] to-transparent" />
+        <div className="max-w-5xl mx-auto flex flex-col items-center relative z-10">
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold tracking-[0.12em] leading-snug text-[#C59B27]">
+            MOTHER TERESA
+            <span className="block mt-1">MEMORIAL SCHOOL</span>
+          </h2>
+          <p className="text-sm font-semibold text-gray-400 mt-4 tracking-wider">
+            UDISE Code: {schoolInfo?.udiseCode || "20090212202"}
+          </p>
+          <div className="flex flex-wrap justify-center items-center gap-x-6 gap-y-4 mt-8 text-sm font-semibold">
+            <Link href="/privacy" className="text-gray-300 hover:text-[#C59B27] transition-colors">Privacy Policy</Link>
+            <Link href="/terms" className="text-gray-300 hover:text-[#C59B27] transition-colors">Terms & Conditions</Link>
+            <Link href="/mandatory-disclosure" className="text-gray-300 hover:text-[#C59B27] transition-colors">Mandatory Disclosure</Link>
+          </div>
+          <div className="w-full max-w-3xl mt-8 pt-5 border-t border-white/10">
+            <p className="text-xs sm:text-sm font-medium text-gray-400 leading-relaxed">
+              © 2026 Mother Teresa Memorial School. All rights reserved.
+            </p>
+          </div>
+        </div>
+      </footer>
 
-  <div className="max-w-5xl mx-auto flex flex-col items-center relative z-10">
-    <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold tracking-[0.12em] leading-snug text-[#C59B27]">
-      MOTHER TERESA
-      <span className="block mt-1">MEMORIAL SCHOOL</span>
-    </h2>
-
-    <p className="text-sm font-semibold text-gray-400 mt-4 tracking-wider">
-      UDISE Code: {schoolInfo?.udiseCode || "20090212202"}
-    </p>
-
-    <div className="flex flex-wrap justify-center items-center gap-x-6 gap-y-4 mt-8 text-sm font-semibold">
-      <Link href="/privacy" className="text-gray-300 hover:text-[#C59B27] transition-colors">
-        Privacy Policy
-      </Link>
-      <Link href="/terms" className="text-gray-300 hover:text-[#C59B27] transition-colors">
-        Terms & Conditions
-      </Link>
-      <Link href="/mandatory-disclosure" className="text-gray-300 hover:text-[#C59B27] transition-colors">
-        Mandatory Disclosure
-      </Link>
-    </div>
-
-    <div className="w-full max-w-3xl mt-8 pt-5 border-t border-white/10">
-      <p className="text-xs sm:text-sm font-medium text-gray-400 leading-relaxed">
-        © 2026 Mother Teresa Memorial School. All rights reserved.
-      </p>
-    </div>
-  </div>
-</footer>
-
-      {/* POPUP MODALS */}
+      {/* ============ POPUP MODALS ============ */}
       
       {/* Secretary Modal */}
       {showSecretaryModal && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 p-4 backdrop-blur-md animate-in fade-in" onClick={() => setShowSecretaryModal(false)}>
           <div className={`relative w-full max-w-2xl rounded-[2rem] shadow-2xl animate-in zoom-in-95 flex flex-col max-h-[90vh] overflow-hidden ${isDarkMode ? "bg-[#1E293B] border border-gray-700 text-white" : "bg-white"}`} onClick={e => e.stopPropagation()}>
-            
             <div className="bg-gradient-to-r from-[#0F1E36] to-[#1E293B] p-6 sm:p-10 text-white relative shrink-0">
               <button onClick={() => setShowSecretaryModal(false)} className="absolute top-4 right-4 sm:top-6 sm:right-6 w-10 h-10 bg-white/10 rounded-full flex items-center justify-center font-bold hover:bg-red-500 transition z-10 text-white">✕</button>
               <h3 className="text-2xl sm:text-4xl font-black mb-2 pr-14">Welcome to MTMS</h3>
               <p className="text-[#C59B27] font-bold text-sm sm:text-lg">Message from the Secretary</p>
             </div>
-            
             <div className="p-6 sm:p-10 space-y-4 sm:space-y-5 text-base sm:text-lg leading-relaxed font-medium overflow-y-auto rounded-b-[2rem]">
               <p>Dear Parents and Students,</p>
               <p>It gives me immense pleasure to welcome you to Mother Teresa Memorial School. Our goal is not just academic excellence, but to instill strong moral values, discipline, and a sense of responsibility in every child.</p>
@@ -987,7 +1100,6 @@ export default function SchoolHomeClient({
                 <p className="text-sm font-bold opacity-60">Secretary, Mother Teresa Memorial School</p>
               </div>
             </div>
-
           </div>
         </div>
       )}
@@ -1051,6 +1163,70 @@ export default function SchoolHomeClient({
             <div className="p-8 sm:p-10 overflow-y-auto rounded-b-[2rem]">
               <h3 className="text-3xl font-black mb-4 text-[#C59B27] pr-10">{selectedFacility.title}</h3>
               <p className={`leading-relaxed text-lg font-medium ${isDarkMode ? "text-gray-300" : "text-gray-600"}`}>{selectedFacility.desc}</p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Staff Profile Modal */}
+      {selectedStaff && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 p-4 backdrop-blur-md animate-in fade-in" onClick={() => setSelectedStaff(null)}>
+          <div className={`relative w-full max-w-lg rounded-[2rem] shadow-2xl overflow-hidden animate-in zoom-in-95 flex flex-col max-h-[90vh] ${isDarkMode ? "bg-[#1E293B] border border-gray-700 text-white" : "bg-white"}`} onClick={(e) => e.stopPropagation()}>
+            <div className="h-56 w-full bg-gradient-to-br from-[#0F1E36] to-[#1E293B] flex items-center justify-center relative shrink-0 overflow-hidden">
+              {selectedStaff.image ? (
+                <Image src={urlFor(selectedStaff.image).url()} alt={selectedStaff.name} fill className="object-cover" />
+              ) : selectedStaff.imageUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={selectedStaff.imageUrl} alt={selectedStaff.name} className="absolute inset-0 w-full h-full object-cover" />
+              ) : (
+                <span className="text-[#C59B27] text-9xl font-black opacity-30">{selectedStaff.name.charAt(0)}</span>
+              )}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+              <button onClick={() => setSelectedStaff(null)} className="absolute top-5 right-5 flex h-10 w-10 items-center justify-center rounded-full bg-black/50 text-white hover:bg-red-500 z-10 transition">✕</button>
+              <div className="absolute bottom-5 left-5 right-5">
+                <span className="inline-block px-4 py-1.5 rounded-full text-xs font-black bg-[#C59B27] text-[#0F1E36] uppercase tracking-wider shadow-lg">
+                  {selectedStaff.role}
+                </span>
+              </div>
+            </div>
+            <div className="p-8 sm:p-10 overflow-y-auto rounded-b-[2rem]">
+              <h3 className="text-3xl font-black mb-6 text-[#0F1E36] dark:text-white">{selectedStaff.name}</h3>
+              <div className="space-y-4">
+                {selectedStaff.fatherName && (
+                  <div className={`p-4 rounded-xl border flex items-center gap-3 ${isDarkMode ? "bg-[#0F172A] border-gray-700" : "bg-[#F8F7F2] border-gray-200"}`}>
+                    <span className="text-2xl">👨‍👦</span>
+                    <div>
+                      <p className="text-[10px] font-bold uppercase tracking-widest opacity-60">Father&apos;s Name</p>
+                      <p className="font-bold">{selectedStaff.fatherName}</p>
+                    </div>
+                  </div>
+                )}
+                {selectedStaff.qualification && (
+                  <div className={`p-4 rounded-xl border flex items-center gap-3 ${isDarkMode ? "bg-[#0F172A] border-gray-700" : "bg-[#F8F7F2] border-gray-200"}`}>
+                    <span className="text-2xl">🎓</span>
+                    <div>
+                      <p className="text-[10px] font-bold uppercase tracking-widest opacity-60">Qualification</p>
+                      <p className="font-bold">{selectedStaff.qualification}</p>
+                    </div>
+                  </div>
+                )}
+                {typeof selectedStaff.age === "number" && (
+                  <div className={`p-4 rounded-xl border flex items-center gap-3 ${isDarkMode ? "bg-[#0F172A] border-gray-700" : "bg-[#F8F7F2] border-gray-200"}`}>
+                    <span className="text-2xl">🎂</span>
+                    <div>
+                      <p className="text-[10px] font-bold uppercase tracking-widest opacity-60">Age</p>
+                      <p className="font-bold">{selectedStaff.age} Years</p>
+                    </div>
+                  </div>
+                )}
+                <div className={`p-4 rounded-xl border flex items-center gap-3 ${isDarkMode ? "bg-[#0F172A] border-gray-700" : "bg-[#F8F7F2] border-gray-200"}`}>
+                  <span className="text-2xl">💼</span>
+                  <div>
+                    <p className="text-[10px] font-bold uppercase tracking-widest opacity-60">Designation</p>
+                    <p className="font-bold">{selectedStaff.role}</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
