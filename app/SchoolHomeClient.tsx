@@ -23,8 +23,7 @@ interface Staff {
   name: string;
   role: string;
   qualification?: string;
-  age?: number;
-  fatherName?: string;
+  bio?: string;
   image?: ImageSource;
   imageUrl?: string;
 }
@@ -75,21 +74,51 @@ const fallbackFaculty: Faculty[] = [
 ];
 
 const fallbackTeachingStaff: Staff[] = [
-  { name: "Anil Kumar Das", role: "Mathematics Teacher", qualification: "M.Tech, B.Ed", age: 38, fatherName: "Ramesh Das", imageUrl: "" },
-  { name: "Priya Sharma", role: "Science Teacher", qualification: "B.Tech, B.Ed", age: 32, fatherName: "Suresh Sharma", imageUrl: "" },
-  { name: "Sunita Murmu", role: "English Teacher", qualification: "M.A. English, B.Ed", age: 35, fatherName: "Lakhan Murmu", imageUrl: "" },
-  { name: "Rakesh Hembrom", role: "Social Science Teacher", qualification: "M.A., B.Ed", age: 40, fatherName: "Mohan Hembrom", imageUrl: "" },
-  { name: "Kavita Singh", role: "Hindi Teacher", qualification: "M.A. Hindi, B.Ed", age: 34, fatherName: "Ram Singh", imageUrl: "" },
-  { name: "Deepak Oraon", role: "Computer Teacher", qualification: "B.Tech (CS), B.Ed", age: 30, fatherName: "Late Som Oraon", imageUrl: "" },
+  { 
+    name: "Amit Marandi", 
+    role: "Computer Operator", 
+    qualification: "B.Tech from IIT Kharagpur", 
+    bio: "I feel really nice here being with a school. The positive environment and the enthusiasm of the students make every day rewarding. Working alongside dedicated colleagues has helped me grow both personally and professionally. I believe that education is the foundation of a bright future. It is a privilege to contribute to this mission.",
+    imageUrl: "" 
+  },
+  { 
+    name: "Jhon Hansda", 
+    role: "English Teacher", 
+    qualification: "Honors Masters Degree", 
+    bio: "Passionate about literature and language. Helping students find their voice through writing and reading is my greatest joy.",
+    imageUrl: "" 
+  },
+  { 
+    name: "Sunita Murmu", 
+    role: "Science Teacher", 
+    qualification: "M.Sc, B.Ed", 
+    bio: "Bringing curiosity to the classroom. I love conducting experiments and watching students discover the wonders of science.",
+    imageUrl: "" 
+  },
 ];
 
 const fallbackNonTeachingStaff: Staff[] = [
-  { name: "Suresh Marandi", role: "School Driver", qualification: "10th Pass, Heavy License", age: 42, fatherName: "Late Budhan Marandi", imageUrl: "" },
-  { name: "Ramesh Kisku", role: "Bus Driver", qualification: "8th Pass, Heavy License", age: 45, fatherName: "Nakul Kisku", imageUrl: "" },
-  { name: "Mohan Tudu", role: "Peon", qualification: "8th Pass", age: 38, fatherName: "Lakhan Tudu", imageUrl: "" },
-  { name: "Sanjay Murmu", role: "Security Guard", qualification: "10th Pass", age: 40, fatherName: "Dinesh Murmu", imageUrl: "" },
-  { name: "Asha Devi", role: "Cook / Helper", qualification: "5th Pass", age: 36, fatherName: "Ramdev Prasad", imageUrl: "" },
-  { name: "Vijay Soren", role: "Cleaner", qualification: "8th Pass", age: 34, fatherName: "Late Som Soren", imageUrl: "" },
+  { 
+    name: "Nicholas Soren", 
+    role: "Driver", 
+    qualification: "B.Ed", 
+    bio: "Ensuring safe and timely transport for our students. The safety of the children is my top priority every single day.",
+    imageUrl: "" 
+  },
+  { 
+    name: "Pankaj Marandi", 
+    role: "Driver", 
+    qualification: "Matriculation", 
+    bio: "Proud to serve the school community. I make sure the students reach home safely after a long day of learning.",
+    imageUrl: "" 
+  },
+  { 
+    name: "Baha Mai Soren", 
+    role: "Cooking Staff", 
+    qualification: "Culinary Certificate", 
+    bio: "Preparing nutritious and delicious meals for our students. A healthy meal helps them focus better in class.",
+    imageUrl: "" 
+  },
 ];
 
 const fallbackAchievements: Achievement[] = [
@@ -266,8 +295,8 @@ export default function SchoolHomeClient({
 
   // Reusable staff card
   const StaffCard = ({ s }: { s: Staff }) => (
-    <div className={`rounded-3xl overflow-hidden border hover-lift group ${isDarkMode ? "bg-[#1E293B] border-gray-700" : "bg-white border-gray-100"}`}>
-      <div className="h-56 relative bg-gradient-to-br from-[#0F1E36] to-[#1E293B] flex items-center justify-center overflow-hidden">
+    <div className={`rounded-3xl overflow-hidden border hover-lift group flex flex-col ${isDarkMode ? "bg-[#1E293B] border-gray-700" : "bg-white border-gray-100"}`}>
+      <div className="h-56 relative bg-gradient-to-br from-[#0F1E36] to-[#1E293B] flex items-center justify-center overflow-hidden shrink-0">
         {s.image ? (
           <Image src={urlFor(s.image).url()} alt={s.name} fill className="object-cover group-hover:scale-105 transition duration-500" />
         ) : s.imageUrl ? (
@@ -279,35 +308,34 @@ export default function SchoolHomeClient({
           </span>
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-        <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between">
-          <span className="inline-block px-3 py-1 rounded-full text-[10px] font-bold bg-[#C59B27] text-[#0F1E36] uppercase tracking-wider">
+        <div className="absolute bottom-4 left-4 right-4">
+          <span className="inline-block px-4 py-1.5 rounded-full text-xs font-black bg-[#C59B27] text-[#0F1E36] uppercase tracking-wider shadow-lg">
             {s.role}
           </span>
-          {typeof s.age === "number" && (
-            <span className="inline-block px-2.5 py-1 rounded-full text-[10px] font-bold bg-white/90 text-[#0F1E36]">
-              Age {s.age}
-            </span>
-          )}
         </div>
       </div>
-      <div className="p-5">
-        <h3 className="font-black text-lg leading-tight">{s.name}</h3>
-        {s.fatherName && (
-          <p className="text-xs opacity-60 mt-1 font-medium">S/o {s.fatherName}</p>
-        )}
+      <div className="p-6 flex flex-col flex-1">
+        <h3 className={`font-black text-xl leading-tight ${isDarkMode ? "text-white" : "text-[#0F1E36]"}`}>{s.name}</h3>
         {s.qualification && (
           <div className="mt-3">
-            <span className="inline-block px-2.5 py-1 rounded-md text-[10px] font-bold bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300">
+            <span className="inline-block px-3 py-1.5 rounded-lg text-sm font-bold bg-[#0F1E36] text-[#E5C66C]">
               🎓 {s.qualification}
             </span>
           </div>
         )}
-        <button
-          onClick={() => setSelectedStaff(s)}
-          className="mt-4 text-xs font-black text-[#C59B27] flex items-center gap-1 hover:gap-2 transition-all"
-        >
-          View Full Profile <span>→</span>
-        </button>
+        {s.bio && (
+          <p className={`text-sm mt-4 leading-relaxed line-clamp-3 ${isDarkMode ? "text-gray-300" : "text-gray-600"}`}>
+            {s.bio}
+          </p>
+        )}
+        <div className="mt-auto pt-6">
+          <button
+            onClick={() => setSelectedStaff(s)}
+            className="text-sm font-black text-[#A67C1E] dark:text-[#C59B27] flex items-center gap-2 hover:gap-3 transition-all"
+          >
+            View Full Profile <span>→</span>
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -346,29 +374,37 @@ export default function SchoolHomeClient({
             <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border-2 border-[#C59B27] text-xl font-black sm:h-14 sm:w-14 shadow-lg transition-transform group-hover:scale-105 ${isDarkMode ? "bg-gray-800 text-[#C59B27]" : "bg-[#0F1E36] text-[#C59B27]"}`}>MT</div>
             <div>
               <h1 className={`text-base font-black leading-tight tracking-wide sm:text-xl ${isDarkMode ? "text-white" : "text-[#0F1E36]"}`}>MOTHER TERESA</h1>
-              <p className="text-[10px] font-bold tracking-[0.2em] text-[#C59B27] sm:text-xs">MEMORIAL SCHOOL</p>
+              <p className="text-[10px] font-bold tracking-[0.2em] text-[#A67C1E] dark:text-[#C59B27] sm:text-xs">MEMORIAL SCHOOL</p>
             </div>
           </a>
           <nav className="hidden items-center gap-6 text-sm font-bold lg:flex">
             {navLinks.map(([label, href]) => (
-              <a key={label} href={href} className={`relative py-2 transition-colors hover:text-[#C59B27] group ${isDarkMode ? "text-gray-300" : "text-gray-600"}`}>
+              <a key={label} href={href} className={`relative py-2 transition-colors hover:text-[#A67C1E] dark:hover:text-[#C59B27] group ${isDarkMode ? "text-gray-300" : "text-gray-600"}`}>
                 {label}
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#C59B27] transition-all group-hover:w-full"></span>
               </a>
             ))}
           </nav>
           <div className="flex items-center gap-3">
-            <button onClick={() => setIsDarkMode(!isDarkMode)} className={`p-2.5 rounded-full border transition-all hover:scale-110 shadow-sm ${isDarkMode ? "border-gray-700 bg-gray-800 text-yellow-400" : "border-gray-200 bg-gray-50 text-gray-600"}`}>
+            <button 
+              onClick={() => setIsDarkMode(!isDarkMode)} 
+              aria-label="Toggle Dark Mode"
+              className={`p-2.5 rounded-full border transition-all hover:scale-110 shadow-sm ${isDarkMode ? "border-gray-700 bg-gray-800 text-yellow-400" : "border-gray-200 bg-gray-50 text-gray-600"}`}
+            >
               {isDarkMode ? "☀️" : "🌙"}
             </button>
-            <button onClick={() => setMenuOpen(!menuOpen)} className={`flex h-11 w-11 items-center justify-center rounded-xl border text-xl lg:hidden transition-all ${isDarkMode ? "bg-gray-800 border-gray-700 text-white" : "bg-[#0F1E36] border-[#0F1E36] text-white"}`}>
+            <button 
+              onClick={() => setMenuOpen(!menuOpen)} 
+              aria-label="Toggle Menu"
+              className={`flex h-11 w-11 items-center justify-center rounded-xl border text-xl lg:hidden transition-all ${isDarkMode ? "bg-gray-800 border-gray-700 text-white" : "bg-[#0F1E36] border-[#0F1E36] text-white"}`}
+            >
               {menuOpen ? "✕" : "☰"}
             </button>
           </div>
           {menuOpen && (
             <nav className={`absolute left-0 right-0 top-full border-t p-4 shadow-2xl lg:hidden ${isDarkMode ? "bg-[#0B1221] border-gray-800" : "bg-white border-gray-100"}`}>
               {navLinks.map(([label, href]) => (
-                <a key={label} href={href} onClick={() => setMenuOpen(false)} className="block py-3 px-4 font-bold rounded-lg hover:bg-[#C59B27]/10 hover:text-[#C59B27] transition">{label}</a>
+                <a key={label} href={href} onClick={() => setMenuOpen(false)} className="block py-3 px-4 font-bold rounded-lg hover:bg-[#C59B27]/10 hover:text-[#A67C1E] transition">{label}</a>
               ))}
             </nav>
           )}
@@ -414,19 +450,19 @@ export default function SchoolHomeClient({
         <div className="mx-auto max-w-5xl">
           <div className={`grid grid-cols-2 md:grid-cols-4 rounded-3xl overflow-hidden shadow-[0_20px_40px_-15px_rgba(15,30,54,0.15)] border ${isDarkMode ? "bg-[#1E293B] border-gray-700" : "bg-white border-gray-100"}`}>
             <div className={`flex flex-col items-center justify-center py-8 px-4 text-center border-b md:border-b-0 md:border-r border-gray-100 dark:border-gray-700 ${isDarkMode ? "hover:bg-gray-800/50" : "hover:bg-gray-50"} transition-colors`}>
-              <p className="text-4xl sm:text-5xl font-black text-[#C59B27] tracking-tight">100%</p>
+              <p className="text-4xl sm:text-5xl font-black text-[#A67C1E] dark:text-[#C59B27] tracking-tight">100%</p>
               <p className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] mt-3 text-gray-500 dark:text-gray-400">Day Scholars</p>
             </div>
             <div className={`flex flex-col items-center justify-center py-8 px-4 text-center border-b md:border-b-0 md:border-r border-gray-100 dark:border-gray-700 ${isDarkMode ? "hover:bg-gray-800/50" : "hover:bg-gray-50"} transition-colors`}>
-              <p className="text-4xl sm:text-5xl font-black text-[#C59B27] tracking-tight">842</p>
+              <p className="text-4xl sm:text-5xl font-black text-[#A67C1E] dark:text-[#C59B27] tracking-tight">842</p>
               <p className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] mt-3 text-gray-500 dark:text-gray-400">Students</p>
             </div>
             <div className={`flex flex-col items-center justify-center py-8 px-4 text-center md:border-r border-gray-100 dark:border-gray-700 ${isDarkMode ? "hover:bg-gray-800/50" : "hover:bg-gray-50"} transition-colors`}>
-              <p className="text-4xl sm:text-5xl font-black text-[#C59B27] tracking-tight">14</p>
+              <p className="text-4xl sm:text-5xl font-black text-[#A67C1E] dark:text-[#C59B27] tracking-tight">14</p>
               <p className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] mt-3 text-gray-500 dark:text-gray-400">Classrooms</p>
             </div>
             <div className={`flex flex-col items-center justify-center py-8 px-4 text-center ${isDarkMode ? "hover:bg-gray-800/50" : "hover:bg-gray-50"} transition-colors`}>
-              <p className="text-4xl sm:text-5xl font-black text-[#C59B27] tracking-tight">30+</p>
+              <p className="text-4xl sm:text-5xl font-black text-[#A67C1E] dark:text-[#C59B27] tracking-tight">30+</p>
               <p className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] mt-3 text-gray-500 dark:text-gray-400">Teachers</p>
             </div>
           </div>
@@ -438,10 +474,10 @@ export default function SchoolHomeClient({
         <div className="mx-auto max-w-6xl">
           <div className="flex flex-col md:flex-row justify-between items-end mb-12">
             <div>
-              <span className="text-xs font-bold tracking-[0.2em] text-[#C59B27] uppercase">Stay Updated</span>
+              <span className="text-xs font-bold tracking-[0.2em] text-[#A67C1E] dark:text-[#C59B27] uppercase">Stay Updated</span>
               <h2 className="text-4xl font-black mt-2">Latest News & Notices</h2>
             </div>
-            <a href="#events" className="text-sm font-bold text-[#C59B27] hover:underline mt-4 md:mt-0 flex items-center gap-2">
+            <a href="#events" className="text-sm font-bold text-[#A67C1E] dark:text-[#C59B27] hover:underline mt-4 md:mt-0 flex items-center gap-2">
               View All <span>→</span>
             </a>
           </div>
@@ -461,10 +497,10 @@ export default function SchoolHomeClient({
                   </div>
                 </div>
                 <div className="p-6">
-                  <span className="text-xs font-bold text-[#C59B27] mb-2 block">{news.date}</span>
-                  <h3 className="font-bold text-xl mb-3 group-hover:text-[#C59B27] transition line-clamp-2">{news.title}</h3>
-                  <p className="text-sm opacity-70 line-clamp-2">{news.content}</p>
-                  <div className="mt-6 flex items-center text-xs font-bold text-[#C59B27]">
+                  <span className="text-xs font-bold text-[#A67C1E] dark:text-[#C59B27] mb-2 block">{news.date}</span>
+                  <h3 className="font-bold text-xl mb-3 group-hover:text-[#A67C1E] transition line-clamp-2">{news.title}</h3>
+                  <p className={`text-sm line-clamp-2 ${isDarkMode ? "text-gray-300" : "text-gray-600"}`}>{news.content}</p>
+                  <div className="mt-6 flex items-center text-xs font-bold text-[#A67C1E] dark:text-[#C59B27]">
                     Read More <span className="ml-2 group-hover:translate-x-2 transition">→</span>
                   </div>
                 </div>
@@ -478,10 +514,10 @@ export default function SchoolHomeClient({
       <section id="about" className={`px-5 py-24 ${isDarkMode ? "bg-[#0B1221]" : "bg-[#F8F7F2]"}`}>
         <div className="mx-auto max-w-6xl grid md:grid-cols-2 gap-16 items-center">
           <div>
-            <span className="text-xs font-bold tracking-[0.2em] text-[#C59B27] uppercase">Our Legacy</span>
+            <span className="text-xs font-bold tracking-[0.2em] text-[#A67C1E] dark:text-[#C59B27] uppercase">Our Legacy</span>
             <h2 className="text-4xl font-black mt-2 mb-6 leading-tight">Education with Values and Purpose</h2>
             <div className="h-1.5 w-24 bg-gradient-to-r from-[#C59B27] to-transparent mb-8" />
-            <div className={`space-y-5 opacity-80 text-sm sm:text-base leading-relaxed ${isDarkMode ? "text-gray-300" : "text-gray-600"}`}>
+            <div className={`space-y-5 text-sm sm:text-base leading-relaxed ${isDarkMode ? "text-gray-300" : "text-gray-700"}`}>
               <p><strong className={isDarkMode ? "text-white" : "text-[#0F1E36]"}>Mother Teresa Memorial School</strong> in Raj Gaon Arazi (Kauri Khutana, Bhagaiya) is a premier co-educational school established in <strong>2005</strong>. Located in the Mandro block of Sahibganj, we provide English-medium education that blends modern academics with traditional values.</p>
               <p>Registered under <strong>UDISE Code {schoolInfo?.udiseCode || "20090212202"}</strong>, our school serves over 840 students from diverse backgrounds, offering a safe, inclusive, and stimulating environment.</p>
               <p>From pre-primary to Class 8, our structured CBSE curriculum is designed to foster critical thinking, creativity, and leadership in every child.</p>
@@ -505,7 +541,7 @@ export default function SchoolHomeClient({
       <section className={`px-5 py-24 ${isDarkMode ? "bg-[#0F172A]" : "bg-white"}`}>
         <div className="mx-auto max-w-6xl text-center">
           <h2 className="text-4xl font-black mb-4">Why Choose MTMS?</h2>
-          <p className="opacity-70 mb-16 max-w-2xl mx-auto">We provide a nurturing environment that balances academics, sports, and moral values.</p>
+          <p className={`mb-16 max-w-2xl mx-auto ${isDarkMode ? "text-gray-400" : "text-gray-600"}`}>We provide a nurturing environment that balances academics, sports, and moral values.</p>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
               { icon: "🛡️", title: "Safe Campus", desc: "24/7 CCTV surveillance and secure boundaries." },
@@ -516,7 +552,7 @@ export default function SchoolHomeClient({
               <div key={i} className={`p-8 rounded-3xl border transition-all hover-lift ${isDarkMode ? "bg-[#1E293B] border-gray-700" : "bg-[#F8F7F2] border-gray-100"}`}>
                 <div className="text-5xl mb-6 drop-shadow-md">{feat.icon}</div>
                 <h3 className="text-xl font-bold mb-3">{feat.title}</h3>
-                <p className="text-sm opacity-70">{feat.desc}</p>
+                <p className={`text-sm ${isDarkMode ? "text-gray-400" : "text-gray-600"}`}>{feat.desc}</p>
               </div>
             ))}
           </div>
@@ -539,7 +575,7 @@ export default function SchoolHomeClient({
                 </div>
                 <div className="p-8">
                   <h3 className="text-xl font-bold mb-3">{item.title}</h3>
-                  <p className="text-sm opacity-70 leading-relaxed">{item.desc}</p>
+                  <p className={`text-sm leading-relaxed ${isDarkMode ? "text-gray-400" : "text-gray-600"}`}>{item.desc}</p>
                 </div>
               </div>
             ))}
@@ -552,7 +588,7 @@ export default function SchoolHomeClient({
         <div className="mx-auto max-w-6xl">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-black">Campus Gallery</h2>
-            <p className="opacity-70 mt-2">A glimpse into our vibrant school life</p>
+            <p className={`mt-2 ${isDarkMode ? "text-gray-400" : "text-gray-600"}`}>A glimpse into our vibrant school life</p>
             
             <div className="flex flex-wrap justify-center gap-2 mt-8">
               {["All", "Campus", "Classrooms", "Sports", "Cultural", "Events"].map(cat => (
@@ -610,11 +646,11 @@ export default function SchoolHomeClient({
                     </div>
                     <div className="p-6 flex-1">
                       <div className="flex justify-between items-start mb-2">
-                        <span className="text-[10px] font-bold text-[#C59B27] uppercase tracking-wider bg-[#C59B27]/10 px-2 py-1 rounded">{ev.category}</span>
+                        <span className="text-[10px] font-bold text-[#A67C1E] dark:text-[#C59B27] uppercase tracking-wider bg-[#C59B27]/10 px-2 py-1 rounded">{ev.category}</span>
                         <span className="text-xs font-bold opacity-60">📅 {ev.date}</span>
                       </div>
-                      <h3 className="text-xl font-bold mb-2 group-hover:text-[#C59B27] transition">{ev.title}</h3>
-                      <p className="text-sm opacity-70 leading-relaxed line-clamp-2">{ev.description}</p>
+                      <h3 className="text-xl font-bold mb-2 group-hover:text-[#A67C1E] transition">{ev.title}</h3>
+                      <p className={`text-sm leading-relaxed line-clamp-2 ${isDarkMode ? "text-gray-400" : "text-gray-600"}`}>{ev.description}</p>
                     </div>
                   </div>
                 </div>
@@ -659,12 +695,12 @@ export default function SchoolHomeClient({
                   <div className="p-6">
                     {(!n.image && !n.imageUrl) && (
                       <div className="flex items-center gap-2 mb-2">
-                        <span className="bg-[#C59B27]/20 text-[#C59B27] text-[10px] font-bold px-3 py-1 rounded-full">{n.category}</span>
-                        {n.isUrgent && <span className="bg-red-500/20 text-red-500 text-[10px] font-bold px-3 py-1 rounded-full animate-pulse">URGENT</span>}
+                        <span className="bg-[#C59B27]/20 text-[#A67C1E] dark:text-[#C59B27] text-[10px] font-bold px-3 py-1 rounded-full">{n.category}</span>
+                        {n.isUrgent && <span className="bg-red-500/20 text-red-600 dark:text-red-400 text-[10px] font-bold px-3 py-1 rounded-full animate-pulse">URGENT</span>}
                       </div>
                     )}
-                    <h3 className="font-bold text-xl group-hover:text-[#C59B27] transition line-clamp-2 mt-2">{n.title}</h3>
-                    <div className="mt-6 text-sm font-bold text-[#C59B27] flex items-center gap-2">
+                    <h3 className="font-bold text-xl group-hover:text-[#A67C1E] transition line-clamp-2 mt-2">{n.title}</h3>
+                    <div className="mt-6 text-sm font-bold text-[#A67C1E] dark:text-[#C59B27] flex items-center gap-2">
                       Read Full Notice <span className="text-xl leading-none group-hover:translate-x-1 transition">→</span>
                     </div>
                   </div>
@@ -683,9 +719,9 @@ export default function SchoolHomeClient({
             {dAchievements.map((ach, i) => (
               <div key={i} onClick={() => setSelectedAchievement(ach)} className={`rounded-3xl p-8 border cursor-pointer hover-lift relative overflow-hidden group ${isDarkMode ? "bg-[#1E293B] border-gray-700" : "bg-[#F8F7F2] border-gray-100"}`}>
                 <div className="absolute top-0 right-0 w-24 h-24 bg-[#C59B27] opacity-5 rounded-bl-full group-hover:scale-150 transition-transform duration-500" />
-                <span className="text-[10px] font-bold text-[#C59B27] uppercase tracking-wider">{ach.category}</span>
-                <h3 className="text-xl font-bold mt-3 mb-3 group-hover:text-[#C59B27] transition">{ach.title}</h3>
-                <p className="text-sm opacity-70 line-clamp-3">{ach.description}</p>
+                <span className="text-[10px] font-bold text-[#A67C1E] dark:text-[#C59B27] uppercase tracking-wider">{ach.category}</span>
+                <h3 className="text-xl font-bold mt-3 mb-3 group-hover:text-[#A67C1E] transition">{ach.title}</h3>
+                <p className={`text-sm line-clamp-3 ${isDarkMode ? "text-gray-400" : "text-gray-600"}`}>{ach.description}</p>
               </div>
             ))}
           </div>
@@ -705,7 +741,7 @@ export default function SchoolHomeClient({
              <div className="md:w-2/3 p-10 flex flex-col items-center text-center justify-center relative">
                 <div className={`inline-block px-6 py-2 rounded-full text-xs font-bold uppercase tracking-wider bg-gradient-to-r from-[#C59B27] to-[#E5C66C] text-[#0F1E36] mb-6 shadow-lg w-max`}>Secretary&apos;s Message</div>
                 <h3 className="text-4xl sm:text-5xl font-black mb-6">Boniface Kisku</h3>
-                <p className="text-lg opacity-70 leading-relaxed mb-10 max-w-2xl mx-auto font-medium">
+                <p className={`text-lg leading-relaxed mb-10 max-w-2xl mx-auto font-medium ${isDarkMode ? "text-gray-300" : "text-gray-600"}`}>
                   Dedicated to providing an environment where every child discovers their unique strengths. At MTMS, we believe that education is a partnership between the school, the teachers, and the parents.
                 </p>
                 <button 
@@ -732,7 +768,7 @@ export default function SchoolHomeClient({
                 <div className="p-6 text-center relative -mt-10 z-10">
                   <div className={`inline-block px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-gradient-to-r from-[#C59B27] to-[#E5C66C] text-[#0F1E36] mb-3 shadow-lg`}>{f.role}</div>
                   <h3 className="text-2xl font-black">{f.name}</h3>
-                  {f.bio && <p className="text-sm opacity-60 mt-3 leading-relaxed line-clamp-2">{f.bio}</p>}
+                  {f.bio && <p className={`text-sm mt-3 leading-relaxed line-clamp-2 ${isDarkMode ? "text-gray-400" : "text-gray-600"}`}>{f.bio}</p>}
                 </div>
               </div>
             ))}
@@ -744,9 +780,9 @@ export default function SchoolHomeClient({
       <section className={`px-5 py-24 ${isDarkMode ? "bg-[#0F172A]" : "bg-white"}`}>
         <div className="mx-auto max-w-6xl">
           <div className="text-center mb-12">
-            <span className="text-xs font-bold tracking-[0.2em] text-[#C59B27] uppercase">Our Team</span>
+            <span className="text-xs font-bold tracking-[0.2em] text-[#A67C1E] dark:text-[#C59B27] uppercase">Our Team</span>
             <h2 className="text-4xl font-black mt-2">Teaching Staff</h2>
-            <p className="opacity-70 mt-2 max-w-2xl mx-auto">Dedicated educators shaping young minds with passion and expertise.</p>
+            <p className={`mt-2 max-w-2xl mx-auto ${isDarkMode ? "text-gray-400" : "text-gray-600"}`}>Dedicated educators shaping young minds with passion and expertise.</p>
           </div>
 
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -764,7 +800,7 @@ export default function SchoolHomeClient({
                 {showAllTeaching ? (
                   <>Show Less <span className="text-lg">↑</span></>
                 ) : (
-                  <>See More Staff ({dTeachingStaff.length - 3} more) <span className="text-lg">→</span></>
+                  <>View More Staff ({dTeachingStaff.length - 3} more) <span className="text-lg">→</span></>
                 )}
               </button>
             </div>
@@ -776,9 +812,9 @@ export default function SchoolHomeClient({
       <section className={`px-5 py-24 ${isDarkMode ? "bg-[#0B1221]" : "bg-[#F8F7F2]"}`}>
         <div className="mx-auto max-w-6xl">
           <div className="text-center mb-12">
-            <span className="text-xs font-bold tracking-[0.2em] text-[#C59B27] uppercase">Support Team</span>
+            <span className="text-xs font-bold tracking-[0.2em] text-[#A67C1E] dark:text-[#C59B27] uppercase">Support Team</span>
             <h2 className="text-4xl font-black mt-2">Non-Teaching Staff</h2>
-            <p className="opacity-70 mt-2 max-w-2xl mx-auto">The backbone of our daily operations — drivers, guards, helpers, and more.</p>
+            <p className={`mt-2 max-w-2xl mx-auto ${isDarkMode ? "text-gray-400" : "text-gray-600"}`}>The backbone of our daily operations — drivers, guards, helpers, and more.</p>
           </div>
 
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -796,7 +832,7 @@ export default function SchoolHomeClient({
                 {showAllNonTeaching ? (
                   <>Show Less <span className="text-lg">↑</span></>
                 ) : (
-                  <>See More Staff ({dNonTeachingStaff.length - 3} more) <span className="text-lg">→</span></>
+                  <>View More Staff ({dNonTeachingStaff.length - 3} more) <span className="text-lg">→</span></>
                 )}
               </button>
             </div>
@@ -809,20 +845,20 @@ export default function SchoolHomeClient({
         <div className="mx-auto max-w-4xl">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-black">Academic Calendar</h2>
-            <p className="opacity-70 mt-2">Important dates for the current session</p>
+            <p className={`mt-2 ${isDarkMode ? "text-gray-400" : "text-gray-600"}`}>Important dates for the current session</p>
           </div>
           <div className={`rounded-3xl border overflow-hidden shadow-2xl ${isDarkMode ? "border-gray-700 bg-[#1E293B]" : "border-gray-100 bg-[#F8F7F2]"}`}>
             {dCalendar.map((cal, i) => (
               <div key={i} className={`grid grid-cols-[auto_1fr_auto] gap-4 sm:gap-6 items-center p-5 sm:p-6 border-b last:border-0 transition hover:bg-[#C59B27]/5 ${isDarkMode ? "border-gray-700" : "border-gray-200"}`}>
                 <div className="flex justify-start">
-                  <span className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-[10px] sm:text-xs font-bold tracking-wider whitespace-nowrap ${cal.type === "Exam" ? "bg-red-100 text-red-700" : cal.type === "Holiday" ? "bg-green-100 text-green-700" : "bg-[#C59B27]/20 text-[#C59B27]"}`}>
+                  <span className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-[10px] sm:text-xs font-bold tracking-wider whitespace-nowrap ${cal.type === "Exam" ? "bg-red-100 text-red-700" : cal.type === "Holiday" ? "bg-green-100 text-green-700" : "bg-[#C59B27]/20 text-[#A67C1E] dark:text-[#C59B27]"}`}>
                     {cal.type}
                   </span>
                 </div>
                 <div className="font-bold text-sm sm:text-lg leading-snug">
                   {cal.title}
                 </div>
-                <div className="text-xs sm:text-sm font-bold text-[#C59B27] text-right whitespace-nowrap">
+                <div className="text-xs sm:text-sm font-bold text-[#A67C1E] dark:text-[#C59B27] text-right whitespace-nowrap">
                   {cal.date}
                 </div>
               </div>
@@ -842,8 +878,8 @@ export default function SchoolHomeClient({
                   <span className="text-6xl group-hover:scale-125 group-hover:rotate-6 transition duration-500 drop-shadow-md">{fac.icon}</span>
                 </div>
                 <div className="p-6 flex-1 flex flex-col justify-between">
-                  <h3 className={`text-xl font-bold group-hover:text-[#C59B27] transition ${isDarkMode ? "text-gray-200" : "text-[#0F1E36]"}`}>{fac.title}</h3>
-                  <span className="mt-4 text-xs font-bold text-[#C59B27] uppercase tracking-wider flex items-center gap-2">Explore <span className="group-hover:translate-x-2 transition">→</span></span>
+                  <h3 className={`text-xl font-bold group-hover:text-[#A67C1E] dark:group-hover:text-[#C59B27] transition ${isDarkMode ? "text-gray-200" : "text-[#0F1E36]"}`}>{fac.title}</h3>
+                  <span className="mt-4 text-xs font-bold text-[#A67C1E] dark:text-[#C59B27] uppercase tracking-wider flex items-center gap-2">Explore <span className="group-hover:translate-x-2 transition">→</span></span>
                 </div>
               </button>
             ))}
@@ -855,7 +891,7 @@ export default function SchoolHomeClient({
       <section className={`px-5 py-24 ${isDarkMode ? "bg-[#0F172A]" : "bg-white"}`}>
         <div className="mx-auto max-w-6xl text-center">
           <h2 className="text-4xl font-black mb-4">What Parents Say</h2>
-          <p className="opacity-70 mb-16">Trusted by hundreds of families in Sahibganj.</p>
+          <p className={`mb-16 ${isDarkMode ? "text-gray-400" : "text-gray-600"}`}>Trusted by hundreds of families in Sahibganj.</p>
           <div className="grid md:grid-cols-3 gap-8 text-left">
             {[
               { name: "Rajesh Kumar", child: "Parent of Class 4 Student", text: "The teachers here are incredibly supportive. My child has shown massive improvement in English and Maths. The campus is very safe and clean." },
@@ -864,12 +900,12 @@ export default function SchoolHomeClient({
             ].map((test, i) => (
               <div key={i} className={`p-8 rounded-3xl border hover-lift ${isDarkMode ? "bg-[#1E293B] border-gray-700" : "bg-[#F8F7F2] border-gray-100"}`}>
                 <div className="text-[#C59B27] text-5xl mb-4">“</div>
-                <p className="text-base opacity-80 italic mb-6 leading-relaxed">{test.text}</p>
+                <p className={`text-base italic mb-6 leading-relaxed ${isDarkMode ? "text-gray-300" : "text-gray-700"}`}>{test.text}</p>
                 <div className="flex items-center gap-4">
                   <div className="w-14 h-14 rounded-full bg-[#0F1E36] text-[#C59B27] flex items-center justify-center font-black text-2xl shadow-inner">{test.name.charAt(0)}</div>
                   <div>
                     <h4 className="font-bold text-lg">{test.name}</h4>
-                    <p className="text-xs opacity-60 font-bold uppercase tracking-wider">{test.child}</p>
+                    <p className={`text-xs font-bold uppercase tracking-wider ${isDarkMode ? "text-gray-400" : "text-gray-600"}`}>{test.child}</p>
                   </div>
                 </div>
               </div>
@@ -891,8 +927,8 @@ export default function SchoolHomeClient({
             ].map((item, i) => (
               <div key={i} className={`p-8 rounded-3xl border relative hover-lift ${isDarkMode ? "bg-[#1E293B] border-gray-700" : "bg-white border-gray-100"}`}>
                 <div className="text-7xl font-black text-[#C59B27] opacity-10 absolute top-2 right-4">{item.step}</div>
-                <h3 className="font-bold text-xl mb-3 mt-4 text-[#C59B27]">{item.title}</h3>
-                <p className="text-sm opacity-70 leading-relaxed">{item.desc}</p>
+                <h3 className="font-bold text-xl mb-3 mt-4 text-[#A67C1E] dark:text-[#C59B27]">{item.title}</h3>
+                <p className={`text-sm leading-relaxed ${isDarkMode ? "text-gray-400" : "text-gray-600"}`}>{item.desc}</p>
               </div>
             ))}
           </div>
@@ -933,7 +969,12 @@ export default function SchoolHomeClient({
 
             {activeTab === "class" && (
               <div className="animate-in fade-in zoom-in duration-300">
-                <select value={selectedClass} onChange={e => setSelectedClass(e.target.value)} className="w-full p-4 rounded-xl bg-[#0F172A] border border-gray-700 text-white text-lg font-bold mb-6 focus:ring-2 focus:ring-[#C59B27] outline-none">
+                <select 
+                  aria-label="Select Class"
+                  value={selectedClass} 
+                  onChange={e => setSelectedClass(e.target.value)} 
+                  className="w-full p-4 rounded-xl bg-[#0F172A] border border-gray-700 text-white text-lg font-bold mb-6 focus:ring-2 focus:ring-[#C59B27] outline-none"
+                >
                   {Object.keys(fallbackClassFees).map(c => <option key={c}>{c}</option>)}
                 </select>
                 <div className="bg-[#0F172A] p-6 sm:p-8 rounded-xl border border-gray-700 space-y-4">
@@ -951,7 +992,12 @@ export default function SchoolHomeClient({
                     <button onClick={() => setUniGender("boy")} className={`flex-1 py-3 rounded-lg font-bold transition ${uniGender === "boy" ? "bg-[#C59B27] text-[#0F1E36]" : "text-gray-400 hover:text-white"}`}>Boys</button>
                     <button onClick={() => setUniGender("girl")} className={`flex-1 py-3 rounded-lg font-bold transition ${uniGender === "girl" ? "bg-[#C59B27] text-[#0F1E36]" : "text-gray-400 hover:text-white"}`}>Girls</button>
                   </div>
-                  <select value={uniSize} onChange={e => setUniSize(e.target.value)} className="w-full p-4 rounded-xl bg-[#0F172A] border border-gray-700 text-white font-bold outline-none">
+                  <select 
+                    aria-label="Select Uniform Size"
+                    value={uniSize} 
+                    onChange={e => setUniSize(e.target.value)} 
+                    className="w-full p-4 rounded-xl bg-[#0F172A] border border-gray-700 text-white font-bold outline-none"
+                  >
                     {uniformSizes.map(s => <option key={s} value={s}>Size {s}</option>)}
                   </select>
                 </div>
@@ -972,15 +1018,15 @@ export default function SchoolHomeClient({
                   <input type="number" placeholder="Big Copies" onChange={e => setBigCopies(Number(e.target.value))} className="p-4 rounded-xl bg-[#0F172A] border border-gray-700 text-white outline-none focus:border-[#C59B27] font-medium" />
                 </div>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                  <select onChange={e => setTieType(e.target.value)} className="w-full p-4 rounded-xl bg-[#0F172A] border border-gray-700 text-white outline-none font-medium">
+                  <select aria-label="Select Tie Type" onChange={e => setTieType(e.target.value)} className="w-full p-4 rounded-xl bg-[#0F172A] border border-gray-700 text-white outline-none font-medium">
                     <option value="Small">Tie: Small (₹50)</option>
                     <option value="Big">Tie: Big (₹100)</option>
                   </select>
-                  <select onChange={e => setBeltType(e.target.value)} className="w-full p-4 rounded-xl bg-[#0F172A] border border-gray-700 text-white outline-none font-medium">
+                  <select aria-label="Select Belt Type" onChange={e => setBeltType(e.target.value)} className="w-full p-4 rounded-xl bg-[#0F172A] border border-gray-700 text-white outline-none font-medium">
                     <option value="Small">Belt: Small (₹75)</option>
                     <option value="Big">Belt: Big (₹100)</option>
                   </select>
-                  <select onChange={e => setSockSize(e.target.value)} className="w-full p-4 rounded-xl bg-[#0F172A] border border-gray-700 text-white outline-none font-medium">
+                  <select aria-label="Select Socks Size" onChange={e => setSockSize(e.target.value)} className="w-full p-4 rounded-xl bg-[#0F172A] border border-gray-700 text-white outline-none font-medium">
                     {sockSizes.map(s => <option key={s.size} value={s.size}>Socks {s.size} - ₹{s.cost}</option>)}
                   </select>
                 </div>
@@ -1017,17 +1063,17 @@ export default function SchoolHomeClient({
             <div className={`p-8 rounded-3xl border hover-lift ${isDarkMode ? "bg-[#1E293B] border-gray-700" : "bg-[#F8F7F2] border-gray-200"}`}>
               <div className="w-14 h-14 bg-[#C59B27]/20 rounded-2xl flex items-center justify-center text-3xl mb-6 shadow-inner">📍</div>
               <h3 className="font-bold text-xl mb-3">School Address</h3>
-              <p className="text-sm font-medium opacity-70 leading-relaxed">At- Kauri Khutana, PO- Bhagaiya, PS- Mirzachowki, Dist- Sahibganj, Jharkhand (813208)</p>
+              <p className={`text-sm font-medium leading-relaxed ${isDarkMode ? "text-gray-400" : "text-gray-600"}`}>At- Kauri Khutana, PO- Bhagaiya, PS- Mirzachowki, Dist- Sahibganj, Jharkhand (813208)</p>
             </div>
             <div className={`p-8 rounded-3xl border hover-lift ${isDarkMode ? "bg-[#1E293B] border-gray-700" : "bg-[#F8F7F2] border-gray-200"}`}>
               <div className="w-14 h-14 bg-[#C59B27]/20 rounded-2xl flex items-center justify-center text-3xl mb-6 shadow-inner">📞</div>
               <h3 className="font-bold text-xl mb-3">Phone</h3>
-              <a href="tel:+919955080617" className="text-base font-bold text-[#C59B27] hover:underline">+91 99550 80617</a>
+              <a href="tel:+919955080617" className="text-base font-bold text-[#A67C1E] dark:text-[#C59B27] hover:underline">+91 99550 80617</a>
             </div>
             <div className={`p-8 rounded-3xl border hover-lift ${isDarkMode ? "bg-[#1E293B] border-gray-700" : "bg-[#F8F7F2] border-gray-200"}`}>
               <div className="w-14 h-14 bg-[#C59B27]/20 rounded-2xl flex items-center justify-center text-3xl mb-6 shadow-inner">✉️</div>
               <h3 className="font-bold text-xl mb-3">Email</h3>
-              <a href="mailto:mtmschoolofficial2005@gmail.com" className="text-sm font-bold text-[#C59B27] hover:underline break-all">mtmschoolofficial2005@gmail.com</a>
+              <a href="mailto:mtmschoolofficial2005@gmail.com" className="text-sm font-bold text-[#A67C1E] dark:text-[#C59B27] hover:underline break-all">mtmschoolofficial2005@gmail.com</a>
             </div>
           </div>
 
@@ -1036,10 +1082,16 @@ export default function SchoolHomeClient({
             <form onSubmit={handleGetDirections} className="flex flex-col md:flex-row gap-4">
               <input 
                 type="text" placeholder="Enter your starting address..." value={userAddress} onChange={(e) => setUserAddress(e.target.value)}
+                aria-label="Starting Address"
                 className={`flex-1 p-5 rounded-xl border font-bold focus:outline-none focus:ring-2 focus:ring-[#C59B27] ${isDarkMode ? "bg-gray-800 border-gray-600 text-white" : "bg-white border-gray-300 text-gray-800"}`} required
               />
               <div className="flex gap-3 w-full md:w-auto">
-                <select value={travelMode} onChange={(e) => setTravelMode(e.target.value)} className={`p-5 rounded-xl border font-bold outline-none flex-1 md:flex-none ${isDarkMode ? "bg-gray-800 border-gray-600 text-white" : "bg-white border-gray-300"}`}>
+                <select 
+                  aria-label="Travel Mode"
+                  value={travelMode} 
+                  onChange={(e) => setTravelMode(e.target.value)} 
+                  className={`p-5 rounded-xl border font-bold outline-none flex-1 md:flex-none ${isDarkMode ? "bg-gray-800 border-gray-600 text-white" : "bg-white border-gray-300"}`}
+                >
                   <option value="driving">🚗 Car</option>
                   <option value="two-wheeler">🏍️ Bike</option>
                   <option value="walking">🚶‍♂️ Walk</option>
@@ -1059,10 +1111,10 @@ export default function SchoolHomeClient({
       <footer className={`px-4 py-12 sm:py-14 text-center ${isDarkMode ? "bg-black" : "bg-[#091426]"} text-white relative overflow-hidden`}>
         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#C59B27] to-transparent" />
         <div className="max-w-5xl mx-auto flex flex-col items-center relative z-10">
-          <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold tracking-[0.12em] leading-snug text-[#C59B27]">
+          <div className="text-xl sm:text-2xl md:text-3xl font-extrabold tracking-[0.12em] leading-snug text-[#C59B27]">
             MOTHER TERESA
             <span className="block mt-1">MEMORIAL SCHOOL</span>
-          </h2>
+          </div>
           <p className="text-sm font-semibold text-gray-400 mt-4 tracking-wider">
             UDISE Code: {schoolInfo?.udiseCode || "20090212202"}
           </p>
@@ -1086,7 +1138,7 @@ export default function SchoolHomeClient({
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 p-4 backdrop-blur-md animate-in fade-in" onClick={() => setShowSecretaryModal(false)}>
           <div className={`relative w-full max-w-2xl rounded-[2rem] shadow-2xl animate-in zoom-in-95 flex flex-col max-h-[90vh] overflow-hidden ${isDarkMode ? "bg-[#1E293B] border border-gray-700 text-white" : "bg-white"}`} onClick={e => e.stopPropagation()}>
             <div className="bg-gradient-to-r from-[#0F1E36] to-[#1E293B] p-6 sm:p-10 text-white relative shrink-0">
-              <button onClick={() => setShowSecretaryModal(false)} className="absolute top-4 right-4 sm:top-6 sm:right-6 w-10 h-10 bg-white/10 rounded-full flex items-center justify-center font-bold hover:bg-red-500 transition z-10 text-white">✕</button>
+              <button onClick={() => setShowSecretaryModal(false)} aria-label="Close Secretary Modal" className="absolute top-4 right-4 sm:top-6 sm:right-6 w-10 h-10 bg-white/10 rounded-full flex items-center justify-center font-bold hover:bg-red-500 transition z-10 text-white">✕</button>
               <h3 className="text-2xl sm:text-4xl font-black mb-2 pr-14">Welcome to MTMS</h3>
               <p className="text-[#C59B27] font-bold text-sm sm:text-lg">Message from the Secretary</p>
             </div>
@@ -1096,7 +1148,7 @@ export default function SchoolHomeClient({
               <p>At MTMS, we believe that education is a partnership between the school, the teachers, and the parents. Together, we can create an environment where children feel safe, valued, and inspired to learn.</p>
               <div className="mt-10 pt-8 border-t dark:border-gray-700">
                 <p className="font-bold">Warm Regards,</p>
-                <p className="text-2xl font-black text-[#C59B27] mt-2">Boniface Kisku</p>
+                <p className="text-2xl font-black text-[#A67C1E] dark:text-[#C59B27] mt-2">Boniface Kisku</p>
                 <p className="text-sm font-bold opacity-60">Secretary, Mother Teresa Memorial School</p>
               </div>
             </div>
@@ -1108,7 +1160,7 @@ export default function SchoolHomeClient({
       {selectedGalleryImg && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 p-4 backdrop-blur-md animate-in fade-in" onClick={() => setSelectedGalleryImg(null)}>
           <div className="relative max-w-6xl w-full max-h-[90vh] flex flex-col items-center animate-in zoom-in-95" onClick={e => e.stopPropagation()}>
-            <button onClick={() => setSelectedGalleryImg(null)} className="absolute -top-14 right-0 text-white hover:text-[#C59B27] text-2xl font-bold bg-white/10 w-12 h-12 rounded-full flex items-center justify-center transition">✕</button>
+            <button onClick={() => setSelectedGalleryImg(null)} aria-label="Close Gallery" className="absolute -top-14 right-0 text-white hover:text-[#C59B27] text-2xl font-bold bg-white/10 w-12 h-12 rounded-full flex items-center justify-center transition">✕</button>
             <div className="relative w-full h-[80vh] rounded-3xl overflow-hidden border border-white/20 shadow-2xl"><Image src={urlFor(selectedGalleryImg.image).url()} alt={selectedGalleryImg.title || "Gallery"} fill className="object-contain bg-black" /></div>
             <p className="text-white text-2xl font-bold mt-8 bg-white/10 px-8 py-3 rounded-full backdrop-blur-md">{selectedGalleryImg.title}</p>
           </div>
@@ -1126,14 +1178,14 @@ export default function SchoolHomeClient({
               </div>
             ) : null}
             <div className="p-6 sm:p-10 overflow-y-auto rounded-b-[2rem]">
-              <button onClick={() => setSelectedNotice(null)} className="absolute top-6 right-6 w-10 h-10 bg-black/50 text-white rounded-full flex items-center justify-center font-bold hover:bg-red-500 transition z-10">✕</button>
+              <button onClick={() => setSelectedNotice(null)} aria-label="Close Notice" className="absolute top-6 right-6 w-10 h-10 bg-black/50 text-white rounded-full flex items-center justify-center font-bold hover:bg-red-500 transition z-10">✕</button>
               <div className="flex items-center gap-3 mb-6 pr-12">
-                <span className="text-[#C59B27] font-bold text-sm uppercase tracking-widest bg-[#C59B27]/10 px-3 py-1 rounded-full">{selectedNotice.category}</span>
+                <span className="text-[#A67C1E] dark:text-[#C59B27] font-bold text-sm uppercase tracking-widest bg-[#C59B27]/10 px-3 py-1 rounded-full">{selectedNotice.category}</span>
                 <span className="text-gray-400 text-sm font-bold">•</span>
                 <span className="text-gray-500 text-sm font-bold">{selectedNotice.date}</span>
               </div>
               <h3 className="text-3xl sm:text-4xl font-black mb-6 leading-tight">{selectedNotice.title}</h3>
-              <p className="text-base sm:text-lg leading-relaxed opacity-80 whitespace-pre-wrap font-medium">{selectedNotice.content}</p>
+              <p className={`text-base sm:text-lg leading-relaxed whitespace-pre-wrap font-medium ${isDarkMode ? "text-gray-300" : "text-gray-700"}`}>{selectedNotice.content}</p>
             </div>
           </div>
         </div>
@@ -1143,11 +1195,11 @@ export default function SchoolHomeClient({
       {selectedAchievement && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 p-4 backdrop-blur-md animate-in fade-in" onClick={() => setSelectedAchievement(null)}>
           <div className={`relative w-full max-w-lg rounded-[2rem] p-8 sm:p-10 shadow-2xl animate-in zoom-in-95 ${isDarkMode ? "bg-[#1E293B] border border-gray-700 text-white" : "bg-white"}`} onClick={e => e.stopPropagation()}>
-            <button onClick={() => setSelectedAchievement(null)} className="absolute top-6 right-6 w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center font-bold hover:bg-red-100 hover:text-red-600 transition">✕</button>
+            <button onClick={() => setSelectedAchievement(null)} aria-label="Close Achievement" className="absolute top-6 right-6 w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center font-bold hover:bg-red-100 hover:text-red-600 transition">✕</button>
             <div className="w-20 h-20 bg-[#C59B27]/20 rounded-3xl flex items-center justify-center text-4xl mb-8">🏆</div>
-            <span className="text-[#C59B27] text-xs font-bold uppercase tracking-widest">{selectedAchievement.category}</span>
+            <span className="text-[#A67C1E] dark:text-[#C59B27] text-xs font-bold uppercase tracking-widest">{selectedAchievement.category}</span>
             <h3 className="text-3xl font-black mb-4 mt-2 pr-10">{selectedAchievement.title}</h3>
-            <p className="text-lg leading-relaxed opacity-80 font-medium">{selectedAchievement.description}</p>
+            <p className={`text-lg leading-relaxed font-medium ${isDarkMode ? "text-gray-300" : "text-gray-700"}`}>{selectedAchievement.description}</p>
           </div>
         </div>
       )}
@@ -1158,10 +1210,10 @@ export default function SchoolHomeClient({
           <div className={`relative w-full max-w-lg rounded-[2rem] shadow-2xl overflow-hidden animate-in zoom-in-95 flex flex-col max-h-[90vh] ${isDarkMode ? "bg-[#1E293B] border border-gray-700 text-white" : "bg-white"}`} onClick={(e) => e.stopPropagation()}>
             <div className="h-48 w-full bg-gradient-to-br from-[#0F1E36] to-[#1E293B] flex items-center justify-center relative shrink-0">
                <span className="text-8xl drop-shadow-lg">{selectedFacility.icon}</span>
-               <button onClick={() => setSelectedFacility(null)} className="absolute top-5 right-5 flex h-10 w-10 items-center justify-center rounded-full bg-black/50 text-white hover:bg-red-500 z-10 transition">✕</button>
+               <button onClick={() => setSelectedFacility(null)} aria-label="Close Facility" className="absolute top-5 right-5 flex h-10 w-10 items-center justify-center rounded-full bg-black/50 text-white hover:bg-red-500 z-10 transition">✕</button>
             </div>
             <div className="p-8 sm:p-10 overflow-y-auto rounded-b-[2rem]">
-              <h3 className="text-3xl font-black mb-4 text-[#C59B27] pr-10">{selectedFacility.title}</h3>
+              <h3 className="text-3xl font-black mb-4 text-[#A67C1E] dark:text-[#C59B27] pr-10">{selectedFacility.title}</h3>
               <p className={`leading-relaxed text-lg font-medium ${isDarkMode ? "text-gray-300" : "text-gray-600"}`}>{selectedFacility.desc}</p>
             </div>
           </div>
@@ -1182,7 +1234,7 @@ export default function SchoolHomeClient({
                 <span className="text-[#C59B27] text-9xl font-black opacity-30">{selectedStaff.name.charAt(0)}</span>
               )}
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-              <button onClick={() => setSelectedStaff(null)} className="absolute top-5 right-5 flex h-10 w-10 items-center justify-center rounded-full bg-black/50 text-white hover:bg-red-500 z-10 transition">✕</button>
+              <button onClick={() => setSelectedStaff(null)} aria-label="Close Staff Profile" className="absolute top-5 right-5 flex h-10 w-10 items-center justify-center rounded-full bg-black/50 text-white hover:bg-red-500 z-10 transition">✕</button>
               <div className="absolute bottom-5 left-5 right-5">
                 <span className="inline-block px-4 py-1.5 rounded-full text-xs font-black bg-[#C59B27] text-[#0F1E36] uppercase tracking-wider shadow-lg">
                   {selectedStaff.role}
@@ -1190,43 +1242,21 @@ export default function SchoolHomeClient({
               </div>
             </div>
             <div className="p-8 sm:p-10 overflow-y-auto rounded-b-[2rem]">
-              <h3 className="text-3xl font-black mb-6 text-[#0F1E36] dark:text-white">{selectedStaff.name}</h3>
-              <div className="space-y-4">
-                {selectedStaff.fatherName && (
-                  <div className={`p-4 rounded-xl border flex items-center gap-3 ${isDarkMode ? "bg-[#0F172A] border-gray-700" : "bg-[#F8F7F2] border-gray-200"}`}>
-                    <span className="text-2xl">👨‍👦</span>
-                    <div>
-                      <p className="text-[10px] font-bold uppercase tracking-widest opacity-60">Father&apos;s Name</p>
-                      <p className="font-bold">{selectedStaff.fatherName}</p>
-                    </div>
-                  </div>
-                )}
-                {selectedStaff.qualification && (
-                  <div className={`p-4 rounded-xl border flex items-center gap-3 ${isDarkMode ? "bg-[#0F172A] border-gray-700" : "bg-[#F8F7F2] border-gray-200"}`}>
-                    <span className="text-2xl">🎓</span>
-                    <div>
-                      <p className="text-[10px] font-bold uppercase tracking-widest opacity-60">Qualification</p>
-                      <p className="font-bold">{selectedStaff.qualification}</p>
-                    </div>
-                  </div>
-                )}
-                {typeof selectedStaff.age === "number" && (
-                  <div className={`p-4 rounded-xl border flex items-center gap-3 ${isDarkMode ? "bg-[#0F172A] border-gray-700" : "bg-[#F8F7F2] border-gray-200"}`}>
-                    <span className="text-2xl">🎂</span>
-                    <div>
-                      <p className="text-[10px] font-bold uppercase tracking-widest opacity-60">Age</p>
-                      <p className="font-bold">{selectedStaff.age} Years</p>
-                    </div>
-                  </div>
-                )}
-                <div className={`p-4 rounded-xl border flex items-center gap-3 ${isDarkMode ? "bg-[#0F172A] border-gray-700" : "bg-[#F8F7F2] border-gray-200"}`}>
-                  <span className="text-2xl">💼</span>
-                  <div>
-                    <p className="text-[10px] font-bold uppercase tracking-widest opacity-60">Designation</p>
-                    <p className="font-bold">{selectedStaff.role}</p>
-                  </div>
+              <h3 className={`text-3xl font-black mb-4 ${isDarkMode ? "text-white" : "text-[#0F1E36]"}`}>{selectedStaff.name}</h3>
+              
+              {selectedStaff.qualification && (
+                <div className="mb-6">
+                  <span className="inline-block px-4 py-2 rounded-xl text-base font-bold bg-[#0F1E36] text-[#E5C66C]">
+                    🎓 {selectedStaff.qualification}
+                  </span>
                 </div>
-              </div>
+              )}
+              
+              {selectedStaff.bio && (
+                <p className={`text-base leading-relaxed font-medium ${isDarkMode ? "text-gray-300" : "text-gray-700"}`}>
+                  {selectedStaff.bio}
+                </p>
+              )}
             </div>
           </div>
         </div>
@@ -1248,8 +1278,8 @@ export default function SchoolHomeClient({
       {showTopBtn && (
         <button 
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          aria-label="Scroll to top"
           className="fixed bottom-32 right-8 z-[80] h-14 w-14 sm:h-16 sm:w-16 rounded-full bg-[#C59B27] text-[#0F1E36] shadow-[0_15px_30px_rgba(197,155,39,0.5)] flex items-center justify-center hover:bg-yellow-500 transition-all transform hover:-translate-y-2 border-4 border-white dark:border-gray-800"
-          title="Go to Top"
         >
           <svg className="w-6 h-6 sm:w-8 sm:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg>
         </button>
@@ -1267,7 +1297,7 @@ export default function SchoolHomeClient({
                   <p className="text-[10px] sm:text-xs text-[#C59B27] font-bold uppercase tracking-wider">Online</p>
                 </div>
               </div>
-              <button onClick={() => setChatOpen(false)} className="text-gray-400 hover:text-white bg-white/10 w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center transition">✕</button>
+              <button onClick={() => setChatOpen(false)} aria-label="Close Chat" className="text-gray-400 hover:text-white bg-white/10 w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center transition">✕</button>
             </div>
             
             <div className={`h-80 overflow-y-auto p-4 sm:p-6 space-y-4 ${isDarkMode ? "bg-[#0F172A]" : "bg-[#F8F7F2]"}`}>
@@ -1284,12 +1314,12 @@ export default function SchoolHomeClient({
             <div className={`p-4 sm:p-5 border-t rounded-b-[2rem] ${isDarkMode ? "bg-[#1E293B] border-gray-700" : "bg-white border-gray-100"}`}>
               <div className="flex gap-2 overflow-x-auto scrollbar-hide mb-3 sm:mb-4">
                 {["Fees", "Timings", "Admission", "Van Routes"].map(q => (
-                  <button key={q} onClick={() => handleSuggestedQuestion(q)} className="text-xs whitespace-nowrap bg-[#C59B27]/10 text-[#C59B27] px-3 sm:px-4 py-1.5 sm:py-2 rounded-full font-bold hover:bg-[#C59B27] hover:text-[#0F1E36] transition shadow-sm">{q}</button>
+                  <button key={q} onClick={() => handleSuggestedQuestion(q)} className="text-xs whitespace-nowrap bg-[#C59B27]/10 text-[#A67C1E] dark:text-[#C59B27] px-3 sm:px-4 py-1.5 sm:py-2 rounded-full font-bold hover:bg-[#C59B27] hover:text-[#0F1E36] transition shadow-sm">{q}</button>
                 ))}
               </div>
               <form onSubmit={handleChatSubmit} className="flex gap-2 sm:gap-3">
-                <input type="text" value={chatInput} onChange={e => setChatInput(e.target.value)} placeholder="Ask a question..." className={`flex-1 rounded-xl px-4 sm:px-5 py-3 sm:py-4 text-sm font-medium border focus:outline-none focus:ring-2 focus:ring-[#C59B27] ${isDarkMode ? "bg-gray-800 border-gray-600 text-white" : "bg-gray-50 border-gray-200"}`} />
-                <button id="chat-submit-btn" type="submit" className="h-10 w-10 sm:h-12 sm:w-12 flex items-center justify-center rounded-xl bg-[#0F1E36] text-[#C59B27] hover:bg-[#C59B27] hover:text-[#0F1E36] transition shadow-lg hover:-translate-y-1">
+                <input type="text" value={chatInput} onChange={e => setChatInput(e.target.value)} placeholder="Ask a question..." aria-label="Chat input" className={`flex-1 rounded-xl px-4 sm:px-5 py-3 sm:py-4 text-sm font-medium border focus:outline-none focus:ring-2 focus:ring-[#C59B27] ${isDarkMode ? "bg-gray-800 border-gray-600 text-white" : "bg-gray-50 border-gray-200"}`} />
+                <button id="chat-submit-btn" type="submit" aria-label="Send Message" className="h-10 w-10 sm:h-12 sm:w-12 flex items-center justify-center rounded-xl bg-[#0F1E36] text-[#C59B27] hover:bg-[#C59B27] hover:text-[#0F1E36] transition shadow-lg hover:-translate-y-1">
                   <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
                 </button>
               </form>
@@ -1297,7 +1327,11 @@ export default function SchoolHomeClient({
           </div>
         )}
         
-        <button onClick={() => setChatOpen(!chatOpen)} className="relative flex items-center justify-center h-16 w-16 sm:h-20 sm:w-20 bg-[#0F1E36] rounded-full shadow-[0_15px_40px_rgba(15,30,54,0.5)] hover:scale-110 hover:bg-[#C59B27] transition-all duration-300 border-4 border-[#C59B27] group">
+        <button 
+          onClick={() => setChatOpen(!chatOpen)} 
+          aria-label="Open AI Assistant"
+          className="relative flex items-center justify-center h-16 w-16 sm:h-20 sm:w-20 bg-[#0F1E36] rounded-full shadow-[0_15px_40px_rgba(15,30,54,0.5)] hover:scale-110 hover:bg-[#C59B27] transition-all duration-300 border-4 border-[#C59B27] group"
+        >
           <svg viewBox="0 0 100 100" className="w-10 h-10 sm:w-14 sm:h-14 group-hover:scale-110 transition drop-shadow-md">
             <ellipse cx="50" cy="65" rx="35" ry="25" fill="#2E7D32" />
             <ellipse cx="50" cy="65" rx="25" ry="15" fill="#4CAF50" />
